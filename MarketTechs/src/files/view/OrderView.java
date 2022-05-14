@@ -9,7 +9,7 @@ public class OrderView {
         boolean is = false;
         do {
             Menu.orderMenu();
-            System.out.println("\n Chọn chức năng");
+            System.out.println("\n Select Function");
             System.out.print("☛ ");
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {

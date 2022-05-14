@@ -2,32 +2,35 @@ package files.view;
 
 import java.util.Scanner;
 
-public class UserViewLaucher {
+public class AdminViewLaucher {
     public static Scanner scanner = new Scanner(System.in);
 
 
     public static void run() {
-        UserView userView = new UserView();
+        AdminView adminView = new AdminView();
         boolean is = false;
         do {
             Menu.userMenu();
-            System.out.println("\n chọn chức năng");
+            System.out.println("\n Select Function");
             System.out.print("☛ ");
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
                 case 1:
-                    userView.addUser();
+                    adminView.addAdmin();
                     break;
                 case 2:
-                    userView.updateUser();
+                    adminView.updateAdmin();
                     break;
                 case 3:
-                    userView.showUser();
+                    adminView.remove();
                     break;
                 case 4:
-                    Menu.lauchMainMenu();
+                    adminView.showAdmin();
                     break;
                 case 5:
+                    Menu.lauchMainMenu();
+                    break;
+                case 6:
                     Menu.exit();
                     System.exit(0);
                 default:

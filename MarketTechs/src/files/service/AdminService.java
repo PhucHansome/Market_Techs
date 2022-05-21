@@ -1,7 +1,8 @@
 package files.service;
 
-import files.object.Role;
-import files.object.Admin;
+import files.model.Role;
+import files.model.Admin;
+import files.model.Techs;
 import files.utils.CSVUtils;
 
 import java.time.Instant;
@@ -42,7 +43,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public boolean existById(int id) {
+    public boolean existById(long id) {
         return getUserById(id) != null;
     }
 
@@ -78,7 +79,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public void updateAdress(Admin newAdmin) {
+    public void updateAddress(Admin newAdmin) {
         List<Admin> admins = getAdmin();
         for (Admin admin : admins) {
             if (admin.getId() == newAdmin.getId()) {
@@ -130,6 +131,15 @@ public class AdminService implements IAdminService {
     }
 
     @Override
+    public Admin getUserById(long id) {
+        List<Admin> admins = getAdmin();
+        for (Admin admin : admins) {
+            if (admin.getId() == id)
+                return admin;
+        }
+        return null;
+    }
+
     public Admin getUserById(int id) {
         List<Admin> admins = getAdmin();
         for (Admin admin : admins) {
@@ -138,4 +148,5 @@ public class AdminService implements IAdminService {
         }
         return null;
     }
+
 }

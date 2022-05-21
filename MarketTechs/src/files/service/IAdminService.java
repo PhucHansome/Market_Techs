@@ -1,6 +1,6 @@
 package files.service;
 
-import files.object.Admin;
+import files.model.Admin;
 
 import java.util.List;
 
@@ -12,11 +12,14 @@ public interface IAdminService {
     void add(Admin newAdmin);
 
     void updateName(Admin newAdmin);
+
     void updatePhone(Admin newAdmin);
-    void updateAdress(Admin newAdmin);
+
+    void updateAddress(Admin newAdmin);
+
     void remove(Admin newAdmin);
 
-    boolean existById(int id);
+    boolean existById(long id);
 
     boolean checkDuplicateEmail(String Email);
 
@@ -24,7 +27,7 @@ public interface IAdminService {
 
     boolean checkDuplicateUserName(String userName);
 
-    Admin getUserById(int id);
+    Admin getUserById(long id);
 
 }
 

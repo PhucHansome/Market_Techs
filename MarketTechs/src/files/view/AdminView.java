@@ -1,12 +1,14 @@
 package files.view;
 
-import files.object.Admin;
-import files.object.Role;
+import files.model.Admin;
+import files.model.Role;
 import files.service.AdminService;
 import files.service.IAdminService;
 import files.utils.AppUtils;
+import files.utils.InstantUtils;
 import files.utils.ValidateUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,13 +25,13 @@ public class AdminView {
             try {
                 switch (inputOption) {
                     case ADD:
-                        System.out.println("Nhấn 'y'để tiếp thêm người dùng \t|\t 'q' để quay lại \t|\t 't' để thoát");
+                        System.out.println("Press 'y'To Add More Users \t|\t 'q' Turn Back \t|\t 't' Exit");
                         break;
                     case UPDATE:
-                        System.out.println("Nhấn 'y' để sửa tiếp \t|\t 'q' để quay lại \t|\t 't' để thoát chương trình");
+                        System.out.println("Press 'y' To Edit more \t|\t 'q' Turn Back \t|\t 't' Exit");
                         break;
                     case SHOW:
-                        System.out.println("Nhấn 'q' để trở lại \t|\t 't' để thoát chương trình");
+                        System.out.println("Press 'q' Turn Back \t|\t 't' Exit");
                         break;
                     default:
                         throw new IllegalStateException("Unexpected value: " + inputOption);
@@ -46,32 +48,32 @@ public class AdminView {
                         Menu.exit();
                         break;
                     default:
-                        System.out.println("Chọn chức năng không đúng! vui lòng chọn lại");
+                        System.out.println("Incorrect!Please Try Again");
                         break;
                 }
             } catch (Exception ex) {
-                System.out.println("Nhập sai! Vui lòng nhập lại");
+                System.out.println("Incorrect!Please Try Again");
                 ex.printStackTrace();
             }
         } while (true);
     }
 
-    private Integer inputId(InputOption option) {
-        Integer id = null;
+    private Long inputId(InputOption option) {
+        Long id = null;
         switch (option) {
             case ADD:
                 System.out.println("Nhập Id");
                 System.out.print("➲ ");
-                while (adminService.existById(id = Integer.parseInt(scanner.nextLine()))) {
-                    System.out.println("Id này đã tồn tại. Vui lòng nhập lại id khác");
+                while (adminService.existById(id = Long.parseLong(scanner.nextLine()))) {
+                    System.out.println("This Id Already Exists, Please Enter Another Id");
                     System.out.print("➲ ");
                 }
                 break;
             case UPDATE:
-                System.out.println("Nhập Id mà bạn muốn sửa:");
+                System.out.println("Press Id You Wanna Edit: ");
                 System.out.print("➲ ");
-                while (!adminService.existById(id = Integer.parseInt(scanner.nextLine()))) {
-                    System.out.println("Id này đã tồn tại. Vui lòng nhập id khác!");
+                while (!adminService.existById(id = Long.parseLong(scanner.nextLine()))) {
+                    System.out.println("This Id Does Not Exist, Please Enter Another Id");
                     System.out.print("➲ ");
                 }
                 break;
@@ -80,52 +82,71 @@ public class AdminView {
     }
 
     public String inputAdminName() {
-        System.out.println("Nhập user name: ");
-        System.out.print("➲ ");
-        String username;
-        while (adminService.checkDuplicateUserName(username = scanner.nextLine())) {
-            System.out.println("Username này đã tồn tại. Vui lòng nhập lại!");
-            System.out.print("➲ ");
-        }
-        return username;
+        boolean restry = true;
+        String adminname = null;
+        do {
+            try {
+                System.out.println("Nhập user name: ");
+                System.out.print("➲ ");
+                while (adminService.checkDuplicateUserName(adminname = scanner.nextLine())) {
+                    System.out.println("This User Already Exists. Please Try Again!");
+                    System.out.print("➲ ");
+                }
+                if (adminname.isEmpty()) {
+                    System.out.println("Cannot Be Left Empty");
+                    restry = false;
+                } else {
+                    restry = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Incorrect! please try again!!");
+            }
+        } while (!restry);
+        return adminname;
     }
 
     private String inputFullname(InputOption option) {
-        switch (option) {
-            case ADD:
-                System.out.println("Nhập họ và tên(vd: Nguyen Van Phuc) ");
-                break;
-            case UPDATE:
-                System.out.println("Nhập tên mà bạn muốn sửa đổi");
-                break;
-        }
-        System.out.print("➲ ");
-        String fullName;
-        while (!ValidateUtils.isNameValid(fullName = scanner.nextLine())) {
-            System.out.println("Tên " + fullName + "không đúng định dạng. Vui lòng nhập lại (Phải viết hoa chữ cái đầu và không dấu)");
-            System.out.println("Nhập tên(vd: Phuc Nguyen )");
+        String fullName = null;
+        try {
+            switch (option) {
+                case ADD:
+                    System.out.println("Enter Your First And Last Name(Example: Nguyen Van Phuc): ");
+                    break;
+                case UPDATE:
+                    System.out.println("Enter The First And Last Name You Want To Change");
+                    break;
+            }
             System.out.print("➲ ");
+            while (!ValidateUtils.isNameValid(fullName = scanner.nextLine())) {
+                System.out.println("Name " + fullName + " Malformed!Please Try Again(Capitalize First Letter And No Accents)");
+                System.out.println("Enter Name (Example: Phuc Nguyen )");
+                System.out.print("➲ ");
+
+            }
+        } catch (Exception e) {
+            System.out.println("Incorrect! Please Try Again!!");
         }
         return fullName;
     }
 
+
     public String inputPhone(InputOption option) {
         switch (option) {
             case ADD:
-                System.out.println("Nhập số điện thoại(vd: 0345567489): ");
+                System.out.println("Press The NumberPhone(Example: 0345567489): ");
                 break;
             case UPDATE:
-                System.out.println("Nhập số điện thoại mà bạn muốn đổi");
+                System.out.println("Press The NumberPhone You Wanna change: ");
                 break;
         }
         System.out.print("➲ ");
         String phone;
         while (!ValidateUtils.isPhoneValid(phone = scanner.nextLine())) {
-            System.out.println("Số " + phone + " Của bạn không đúng. Vui lòng nhập lại! (Số điện thoại bắt đầu là 10 số và bắt đầu là số 0");
-            System.out.println("Nhập số điện thoại (Vd: 0304456748)");
+            System.out.println("Number " + phone + " Incorrect!Please Try Again(Phone Numbers Start From 0 And Have 10 Numbers");
+            System.out.println("Press The Number phone (Example: 0304456748)");
             System.out.print("➲ ");
             if (adminService.checkDuplicatePhone(phone)) {
-                System.out.println("Số này đã tồn tại");
+                System.out.println("This Number Already Exists");
                 System.out.print("➲ ");
             }
         }
@@ -133,23 +154,23 @@ public class AdminView {
     }
 
     private String inputEmail() {
-        System.out.println("Nhập email(vd: phucnguyen@gmail.com) ");
+        System.out.println("Press email(vd: phucnguyen@gmail.com) ");
         System.out.print("➲ ");
         String email;
         while (!ValidateUtils.isEmailValid(email = scanner.nextLine())) {
-            System.out.println("Email " + email + " của bạn không đúng định dạng! Vui lòng kiểm tra và nhập lại");
-            System.out.println("Nhập email(vd: phucnguyen@gmail.com");
+            System.out.println("Email " + email + " Incorrect!Please Try Again!!");
+            System.out.println("Press email(Example: phucnguyen@gmail.com");
             System.out.print("➲ ");
         }
         return email;
     }
 
     private String inputPassword() {
-        System.out.println("Nhập mật khẩu(Mật khẩu phải > 8 ký tự)");
+        System.out.println("Press Password(Password Must Be More Than 8 Characters)");
         System.out.print("➲ ");
         String password;
         while (!ValidateUtils.isPasswordValid(password = scanner.nextLine())) {
-            System.out.println("Mật khẩu yếu! Vui lòng nhập lại");
+            System.out.println("Weak Password! Please Try Again");
             System.out.print("➲ ");
         }
         return password;
@@ -158,22 +179,35 @@ public class AdminView {
     private String inputAddress(InputOption option) {
         switch (option) {
             case ADD:
-                System.out.println("Nhập địa chỉ(VD:Hue)");
+                System.out.println("Pres Address(VD:Hue)");
                 break;
             case UPDATE:
-                System.out.println("Nhập địa chỉ mà bạn muốn đổi");
+                System.out.println("Press The Address You Wanna Change: ");
                 break;
-
         }
-        System.out.print("➲ ");
-        String address = scanner.nextLine();
+        boolean is = false;
+        String address = null;
+        do {
+            try {
+                System.out.print("➲ ");
+                address = scanner.nextLine();
+                if (address.isEmpty()) {
+                    System.out.println("Cannot Be Left Empty");
+                    is = false;
+                } else {
+                    is = true;
+                }
+            } catch (Exception e) {
+                System.out.println("Incorrect! Please Try Again!!");
+            }
+        } while (!is);
         return address;
     }
 
     public void addAdmin() {
         do {
             try {
-                Integer id = inputId(InputOption.ADD);
+                Long id = System.currentTimeMillis() / 1000;
                 String username = inputAdminName();
                 String password = inputPassword();
                 String fullName = inputFullname(InputOption.ADD);
@@ -185,7 +219,7 @@ public class AdminView {
                 setRole(admin);
                 adminService.add(admin);
             } catch (Exception e) {
-                System.out.println("Nhập sai. Vui lòng nhập lại");
+                System.out.println("Incorrect! Please Try Again!");
             }
         } while (isRetry(InputOption.ADD));
     }
@@ -203,26 +237,31 @@ public class AdminView {
         switch (option) {
             case 1:
                 admin.setRole(Role.USER);
+                System.out.println("Successfully Added Account");
+
                 break;
             case 2:
                 admin.setRole(Role.ADMIN);
+                System.out.println("Successfully Added Account");
+
                 break;
             default:
-                System.out.println("nhập không đúng! vui lòng nhập lại");
+                System.out.println("Incorrect! Please try again!!");
                 break;
             //setRole(admin);
         }
     }
 
     public void showAdmin() {
-        System.out.println("-----------------------------------------------------LIST CUSTOMER-----------------------------------------------------");
-        System.out.printf("%-5s %-22s %-15s %-30s %-20s %-20s %-10s \n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE","Date Creat");
+        System.out.println("----------------------------------------------------------------------------LIST CUSTOMER----------------------------------------------------------------------------");
+        System.out.printf("%-15s %-22s %-15s %-30s %-20s %-15s %-15s \n\n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
         List<Admin> admins = adminService.getAdmin();
+        Collections.sort(admins);
         for (Admin admin : admins) {
-            System.out.printf("%-5d %-22s %-15s %-30s %-20s %-20s %-10s  \n", admin.getId(), admin.getName(), admin.getPhone(), admin.getEmail(), admin.getAddress(), admin.getRole(), admin.getCreatDate());
+            System.out.printf("%-15d %-22s %-15s %-30s %-20s %-15s %-15s  \n\n", admin.getId(), admin.getName(), admin.getPhone(), admin.getEmail(), admin.getAddress(), admin.getRole(), InstantUtils.instantToString(admin.getCreatDate()));
 
         }
-        System.out.println("-------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         isRetry(InputOption.SHOW);
     }
 
@@ -231,7 +270,7 @@ public class AdminView {
         do {
             try {
                 showUser1();
-                Integer id = inputId(InputOption.UPDATE);
+                Long id = inputId(InputOption.UPDATE);
                 System.out.println("\t┌ - - - - - - - EDIT - - - - - - - ┐");
                 System.out.println("\t︲                                 ︲");
                 System.out.println("\t︲        1. Edit Name             ︲");
@@ -246,7 +285,7 @@ public class AdminView {
                     System.out.print("➲ ");
                     option = Integer.parseInt(scanner.nextLine());
                     if (option > 4 || option < 1) {
-                        System.out.println("Chọn chức năng không đúng! Vui lòng chọn lại");
+                        System.out.println("Incorrect! Please Try Again");
                         continue;
                     }
                     break;
@@ -258,50 +297,84 @@ public class AdminView {
                         String name = inputFullname(InputOption.UPDATE);
                         newAdmin.setName(name);
                         adminService.updateName(newAdmin);
-                        System.out.println("bạn đã đổi thành công!");
+                        System.out.println("You Have Successfully Changed Your Name!");
+                        showUser1();
                         break;
                     case 2:
                         String phone = inputPhone(InputOption.UPDATE);
                         newAdmin.setPhone(phone);
                         adminService.updatePhone(newAdmin);
-                        System.out.println("Bạn đã đổi số điện thoại thành công!!");
+                        System.out.println("You Have Successfully Changed Your Phone Number!!");
+                        showUser1();
                         break;
                     case 3:
                         String address = inputAddress(InputOption.UPDATE);
                         newAdmin.setAddress(address);
-                        adminService.updateAdress(newAdmin);
-                        System.out.println("Bạn đã đổi thành công !!");
+                        adminService.updateAddress(newAdmin);
+                        System.out.println("You Have Successfully Changed Your Address!!");
+                        showUser1();
                         break;
                 }
                 isRetry = option != 4 && isRetry(InputOption.UPDATE);
 
             } catch (Exception e) {
-                System.out.println("Nhập sai! vui lòng nhập lại");
+                System.out.println("Incorrect!Please Try Again!!");
             }
         } while (isRetry);
     }
-
 
     public void adminLogin() {
-        boolean isRetry;
-        System.out.println("✽ ✽ ✽ ✽ ✽ ✽ ✽ ✽ LOGIN MANAGER ✽ ✽ ✽ ✽ ✽ ✽ ✽ ✽ ");
+        boolean isRetry = false;
+        System.out.println("✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦");
+        System.out.println("✦                                                ✦");
+        System.out.println("✦                Technology Market               ✦");
+        System.out.println("✦                                                ✦");
+        System.out.println("✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦\n");
+        System.out.println("✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦  LOGIN MANAGER ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦  ");
         do {
-            System.out.println("Username");
-            System.out.print(" ⭆ ");
-            String username = scanner.nextLine();
-            System.out.println("Mật khẩu");
-            System.out.print(" ⭆ ");
-            String password = scanner.nextLine();
-            if (adminService.loginAdmin(username, password) == null) {
-                System.out.println("Tài khoản không hợp lệ ");
-                isRetry = isRetry();
-            } else {
-                System.out.println("Logged in successfully!! \n");
-                System.out.println("Wellcome to the Market Techs\n");
-                isRetry = false;
+            try {
+                String username;
+                boolean check = false;
+                do {
+                    System.out.println("Username");
+                    System.out.print(" ⭆ ");
+                    username = scanner.nextLine();
+                    if (username.isEmpty()) {
+                        System.out.println("Incorrect! please try again!!");
+                        check = true;
+                    } else {
+                        check = false;
+                    }
+                } while (check);
+                String password;
+                do {
+                    System.out.println("PassWord");
+                    System.out.print(" ⭆ ");
+                    password = scanner.nextLine();
+                    if (password.isEmpty()) {
+                        System.out.println("Incorrect! please try again!!");
+                        check = true;
+
+                    } else {
+                        check = false;
+                    }
+                } while (check);
+
+                if (adminService.loginAdmin(username, password) == null) {
+                    System.out.println("This Account Is Invalid ");
+                    isRetry = isRetry();
+                } else {
+                    System.out.println("\tLogged In Successfully!! \n");
+                    System.out.println("\tWellcome To The Technology Market\n");
+                    isRetry = false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Incorrect! Please Try Again!!");
             }
         } while (isRetry);
     }
+
 
     private boolean isRetry() {
         do {
@@ -321,38 +394,40 @@ public class AdminView {
                         AppUtils.exit();
                         break;
                     default:
-                        System.out.println("Chọn chức năng không đúng! Vui lòng chọn lại");
+                        System.out.println("Enter Your Function!Please Try Again");
                         break;
                 }
-
             } catch (Exception ex) {
-                System.out.println("Nhập sai! vui lòng nhập lại");
+                System.out.println("Incorrect!Please Try Again!!");
                 ex.printStackTrace();
             }
         } while (true);
     }
 
-
     public void showUser1() {
-        System.out.println("------------------------------------------------LIST CUSTOMER------------------------------------------------");
-        System.out.printf("%-5s %-22s %-15s %-30s %-20s %-10s %-10s \n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
+        System.out.println("-----------------------------------------------------------------------LIST CUSTOMER-----------------------------------------------------------------------");
+        System.out.printf("%-15s %-22s %-15s %-30s %-20s %-10s %-10s \n\n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
         List<Admin> admins = adminService.getAdmin();
+        Collections.sort(admins);
         for (Admin admin : admins) {
-            System.out.printf("%-5d %-22s %-15s %-30s %-20s %-10s %-10s  \n", admin.getId(), admin.getName(), admin.getPhone(), admin.getEmail(), admin.getAddress(), admin.getRole(), admin.getCreatDate());
+            System.out.printf("%-15d %-22s %-15s %-30s %-20s %-10s %-10s  \n\n", admin.getId(), admin.getName(), admin.getPhone(), admin.getEmail(), admin.getAddress(), admin.getRole(), InstantUtils.instantToString(admin.getCreatDate()));
 
         }
-        System.out.println("---------------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
     }
-        public void remove() {
+
+    public void remove() {
+        try {
             showUser1();
             adminService.getAdmin();
             System.out.println("Press Id You Wanna Remove:");
             System.out.print("➲ ");
-            int id = Integer.parseInt(scanner.nextLine());
+            long id = Long.parseLong(scanner.nextLine());
             Admin admin = adminService.getUserById(id);
             System.out.println(admin);
             if (admin == null) {
-                System.out.println("Không tìm thấy Id để xóa!!");
+                System.out.println("Can't Find The Id To Delete!!");
+                remove();
             } else {
                 boolean check = true;
                 System.out.println("\t❄ ❄ ❄ ❄ ❄ ❄ ❄REMOVE COFIRM❄ ❄ ❄ ❄ ❄ ❄ ❄");
@@ -365,10 +440,9 @@ public class AdminView {
                 int choice = Integer.parseInt(scanner.nextLine());
                 switch (choice) {
                     case 1:
-
                         adminService.remove(admin);
-
-                        System.out.println("Đã xóa User thành công!");
+                        System.out.println("User Deleted Successfully!");
+                        showUser1();
                         do {
                             System.out.println("\t------------------------------------------------------------");
                             System.out.println("\t| Press 'y' To Go Back\t|\t'n' To Exit  |");
@@ -384,7 +458,7 @@ public class AdminView {
                                     System.exit(0);
                                     break;
                                 default:
-                                    System.out.println("Nhấn không đúng!! vui lòng chọn lại");
+                                    System.out.println("Incorrect!!Please Try Again");
                                     check = false;
                             }
                         } while (!check);
@@ -393,8 +467,11 @@ public class AdminView {
                         AdminViewLaucher.run();
                         break;
                     default:
-                        System.out.println("Chọn chức năng không đúng!! vui lòng chọn lại ");
+                        System.out.println("Incorrect!!Please Try Again!!");
                 }
             }
+        } catch (Exception e) {
+            System.out.println("Incorrect! Please try again!!");
         }
     }
+}

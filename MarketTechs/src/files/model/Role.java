@@ -1,4 +1,4 @@
-package files.object;
+package files.model;
 
 public enum Role {
     ADMIN("ADMIN"), USER("USER");

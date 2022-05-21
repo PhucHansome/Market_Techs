@@ -1,6 +1,6 @@
 package files.service;
 
-import files.object.Techs;
+import files.model.Techs;
 import files.utils.CSVUtils;
 
 import java.time.Instant;
@@ -8,7 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TechsSevice implements ITechsSevice {
+
     public static String path = "data/techs.scv";
+
+    private static TechsSevice instance;
+
+    public static TechsSevice getInstance() {
+        if (instance == null)
+            instance = new TechsSevice();
+        return instance;
+    }
+
 
     @Override
     public List<Techs> getTechs() {
@@ -29,11 +39,60 @@ public class TechsSevice implements ITechsSevice {
     }
 
     @Override
-    public void update(Techs newTechs) {
+    public void updateName(Techs newTechs) {
         List<Techs> techs = getTechs();
-        for (int i = 0; i < techs.size(); i++) {
-            if (techs.get(i).getId() == newTechs.getId()) {
-                techs.set(i, newTechs);
+        for (Techs tech : techs) {
+            if (tech.getId() == newTechs.getId()) {
+                String name = tech.getNameTechs();
+                if (name != null && !name.isEmpty())
+                    tech.setNameTechs(newTechs.getNameTechs());
+                tech.setUpdateDate(Instant.now());
+                CSVUtils.write(path, techs);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void updatePrice(Techs newTechs) {
+        List<Techs> techs = getTechs();
+        for (Techs tech : techs) {
+            if (tech.getId() == newTechs.getId()) {
+                double price = tech.getPriceTechs();
+                if (price > 0)
+                    tech.setPriceTechs(newTechs.getPriceTechs());
+                tech.setUpdateDate(Instant.now());
+                CSVUtils.write(path, techs);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void updateQuantity(Techs newTechs) {
+        List<Techs> techs = getTechs();
+        for (Techs tech : techs) {
+            if (tech.getId() == newTechs.getId()) {
+                double Quantity = tech.getQuantityTechs();
+                if (Quantity > 0)
+                    tech.setQuantityTechs(newTechs.getQuantityTechs());
+                tech.setUpdateDate(Instant.now());
+                CSVUtils.write(path, techs);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void updateDescription(Techs newTechs) {
+        List<Techs> techs = getTechs();
+        for (Techs tech : techs) {
+            if (tech.getId() == newTechs.getId()) {
+                String Description = tech.getType();
+                if (Description != null && !Description.isEmpty())
+                    tech.setType(newTechs.getType());
+                tech.setUpdateDate(Instant.now());
+                CSVUtils.write(path, techs);
                 break;
             }
         }
@@ -49,17 +108,32 @@ public class TechsSevice implements ITechsSevice {
 
 
     @Override
-    public boolean existById(int id) {
+    public boolean existById(long id) {
         return getTechsById(id) != null;
     }
 
+
     @Override
-    public Techs getTechsById(int id) {
+    public Techs getTechsById(long id) {
         List<Techs> techs = getTechs();
         for (Techs tech : techs) {
             if (tech.getId() == id)
                 return tech;
         }
         return null;
+    }
+
+    public void update() {
+        List<Techs> techs = getTechs();
+        CSVUtils.write(path, techs);
+    }
+
+    public boolean isExistId(ArrayList<Techs> list, long id) {
+        for (Techs techs : list) {
+            if (techs.getId() == id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,35 +1,238 @@
 package files.view;
 
+import files.model.Order;
+import files.model.OrderItem;
+import files.model.Techs;
+import files.service.*;
+import files.utils.AppUtils;
+import files.utils.InstantUtils;
+import files.utils.ValidateUtils;
+
+import java.awt.*;
+import java.time.Instant;
+import java.util.List;
 import java.util.Scanner;
 
 public class OrderView {
-    public static Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
+    private final ITechsSevice techsSevice;
+    private final IOrderService orderService;
+    private final IOrderItemService orderItemService;
 
-    public static void run() {
-        boolean is = false;
-        do {
-            Menu.orderMenu();
-            System.out.println("\n Select Function");
-            System.out.print("☛ ");
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1:
-                    OrderView.run();
-                    break;
-                case 2:
-                    OrderView.run();
-                    break;
-                case 3:
-                    Menu.lauchMainMenu();
-                    break;
-                case 4:
-                    Menu.exit();
-                    System.exit(0);
-                    break;
-                default:
-                    OrderView.run();
-                    break;
+    public OrderView() {
+        techsSevice = TechsSevice.getInstance();
+        orderService = OrderService.getInstance();
+        orderItemService = OrderItemService.getInstance();
+    }
+
+    public OrderItem addOrderItems(long orderId) {
+        try {
+
+
+        orderItemService.findAll();
+        TechsProduct techsProductView = new TechsProduct();
+        techsProductView.showTechs1();
+        long id = System.currentTimeMillis() / 1000;
+        System.out.println("Press Product Id: ");
+        System.out.print("⭆ ");
+        int techsId = Integer.parseInt(scanner.nextLine());
+        while (!techsSevice.existById(techsId)) {
+            System.out.println("Product ID Does Not Exist ");
+            System.out.println("Press Product Id:: ");
+            System.out.print("⭆ ");
+            techsId = Integer.parseInt(scanner.nextLine());
+        }
+        Techs product = techsSevice.getTechsById(techsId);
+        double price = product.getPriceTechs();
+        int oldQuantity = product.getQuantityTechs();
+        System.out.println("Press Quantity");
+        System.out.print("⭆ ");
+        int quantity = Integer.parseInt(scanner.nextLine());
+        while (!checkQualityTechs(product, quantity)) {
+            System.out.println("Exceeded Quantity! Please Try again");
+            System.out.println("Press Quantity: ");
+            System.out.print("⭆ ");
+            quantity = Integer.parseInt(scanner.nextLine());
+        }
+        String Techname = product.getNameTechs();
+        double total = quantity * price;
+        int currentQuantity = oldQuantity - quantity;
+        product.setQuantityTechs(currentQuantity);
+        OrderItem orderItem = new OrderItem(id, price, quantity, orderId, techsId, Techname, total);
+        return orderItem;
+        }catch (Exception e){
+            System.out.println("Incorrect! Please Try Again!!");
+        }
+    }
+
+    public boolean checkQualityTechs(Techs techs, int quantity) {
+        if (quantity <= techs.getQuantityTechs())
+            return true;
+        else
+            return false;
+    }
+
+    public void addOrder() {
+        try {
+            orderItemService.findAll();
+            long orderId = System.currentTimeMillis() / 1000;
+            System.out.println("Press Full Name(Example: Phuc Nguyen) ");
+            System.out.print(" ⭆ ");
+            String name = scanner.nextLine();
+            while (!ValidateUtils.isNameValid(name)) {
+                System.out.println("Name " + name + " Incorrect!Please Try Again (Capitalize First Letter And Unsigned )");
+                System.out.println("Enter Name(Example Phuc Nguyen) ");
+                System.out.print(" ⭆ ");
+                name = scanner.nextLine();
             }
-        } while (!is);
+            System.out.println("Press Number Phone");
+            System.out.print(" ⭆ ");
+            String phone = scanner.nextLine();
+            while (!ValidateUtils.isPhoneValid(phone)) {
+                System.out.println("Number Phone " + phone + "Incorrect! Please Try Again(Start With 0 And Total 10 Numbers)");
+                System.out.println("Press Number Phone (Example: 0349108527)");
+                System.out.print(" ⭆ ");
+                phone = scanner.nextLine();
+            }
+            System.out.println("Press Address:");
+            System.out.print(" ⭆ ");
+            String address = scanner.nextLine();
+            while (address.isEmpty()){
+                System.out.println("Can't Be Left Empty");
+                System.out.println("Press Address:");
+                System.out.print(" ⭆ ");
+                address = scanner.nextLine();
+            }
+            OrderItem orderItem = addOrderItems(orderId);
+            Order order = new Order(orderId, name, phone, address);
+            orderItemService.add(orderItem);
+            orderService.add(order);
+            System.out.println("Tạo đơn hàng thành công");
+            System.out.println("㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡");
+            System.out.println("㋡                                         ㋡");
+            System.out.println("㋡           1. Create Next Order          ㋡");
+            System.out.println("㋡           2. Print Bill                 ㋡");
+            System.out.println("㋡           3. Turn Back                  ㋡");
+            System.out.println("㋡           4. Exit                       ㋡");
+            System.out.println("㋡                                         ㋡");
+            System.out.println("㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡");
+            System.out.print(" ⭆ ");
+            do {
+                int choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1:
+                        addOrder();
+                        break;
+                    case 2:
+                        showPaymentInfo(orderItem, order);
+                        break;
+                    case 3:
+                        OrderViewLauncher.run();
+                        break;
+                    case 4:
+                        AppUtils.exit();
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("");
+                        break;
+                }
+            } while (true);
+        } catch (Exception e) {
+            System.out.println("Incorrect! Please Try Again!!");
+        }
+    }
+
+    public void showPaymentInfo(OrderItem orderItem, Order order) {
+        try {
+            System.out.println("=============================================================================");
+            System.out.println("|                                   BILL                                    |");
+            System.out.println("=============================================================================");
+            System.out.printf("|\t%-20s\t %-25s %20s |\n", "Full Name   :", order.getFullName(), "");
+            System.out.printf("|\t%-20s\t %-25s %20s |\n", "NumberPhone :", order.getMobile(), "");
+            System.out.printf("|\t%-20s\t %-25s %20s |\n", "Address     :", order.getAddress(), "");
+            System.out.printf("|\t%-20s\t %-25s %20s |\n", "Creat Date  : ", InstantUtils.instantToString(order.getCreatedAt()), "");
+            System.out.println("=============================================================================");
+            System.out.printf(" %-20s\t %-25s %-25s \n", "Product Name", "Quantity", "Price");
+            System.out.printf(" %-20s\t %-25s %-25s \n",
+                    orderItem.getProductName(),
+                    orderItem.getQuantity(),
+                    AppUtils.doubleToVND(orderItem.getPrice()));
+            System.out.println("                                             Total:" + AppUtils.doubleToVND(orderItem.getQuantity() * orderItem.getPrice()) + "\n");
+            System.out.println("-------------------------------Technology Market-----------------------------\n");
+            System.out.println("                                                     Sign\n\n");
+            System.out.println("                                             ๖ۣۜP๖ۣۜH๖ۣۜU๖ۣۜC ๖ۣۜN๖ۣۜG๖ۣۜU๖ۣۜY๖ۣۜE๖ۣۜN");
+            boolean is = true;
+            do {
+                System.out.println("Nhấn 'q' để trở lại \t|\t 't' để thoát chương trình");
+                System.out.println("Nhấn ");
+                System.out.print(" ⭆ ");
+                String choice = scanner.nextLine();
+                switch (choice) {
+                    case "q":
+                        OrderViewLauncher.run();
+                        break;
+                    case "t":
+                        AppUtils.exit();
+                        break;
+                    default:
+                        System.out.println("Incorrect!Please Try Again!!");
+                        is = false;
+                }
+            } while (!is);
+        } catch (Exception e) {
+            System.out.println("Incorrect! Please Try Again!!");
+        }
+    }
+
+    public void showAllOrder() {
+        List<Order> orders = orderService.findAll();
+        List<OrderItem> orderItems = orderItemService.findAll();
+        OrderItem newOrderItem = new OrderItem();
+        try {
+            System.out.println("----------------------------------------------------------LIST ORDER--------------------------------------------------------------------");
+            System.out.println("|                                                                                                                                      |");
+            System.out.printf("|%-15s %-20s %-12s %-23s %-10s %-10s %-15s %-21s\n|", "   Id", "Tên khách hàng", "  SĐT", "Địa chỉ", "Tên bánh", "Số lượng", "   Giá", "   Tổng" + "               |");
+            for (Order order : orders) {
+                for (OrderItem orderItem : orderItems) {
+                    if (orderItem.getOrderId() == order.getId()) {
+                        newOrderItem = orderItem;
+                        break;
+                    }
+                }
+                System.out.printf("%-15s %-20s %-12s %-23s %-10s %-10d %-15s %-21s|\n",
+                        order.getId()
+                        , order.getFullName(),
+                        order.getMobile(),
+                        order.getAddress(),
+                        newOrderItem.getProductName()
+                        , newOrderItem.getQuantity(),
+                        newOrderItem.getPrice(),
+                        AppUtils.doubleToVND(newOrderItem.getQuantity() * newOrderItem.getPrice()
+                        )
+                );
+            }
+            System.out.println("                                                                                                                         |");
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
+            boolean is = true;
+            do {
+                System.out.println("Nhấn 'q' để trở lại \t|\t 't' để thoát chương trình");
+                System.out.print(" ⭆ ");
+                String choice = scanner.nextLine();
+                switch (choice) {
+                    case "q":
+                        OrderViewLauncher.run();
+                        break;
+                    case "t":
+                        AppUtils.exit();
+                        break;
+                    default:
+                        System.out.println("Nhấn không đúng! vui lòng nhập lại");
+                        is = false;
+                }
+            } while (!is);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 }

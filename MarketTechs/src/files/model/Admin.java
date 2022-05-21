@@ -1,10 +1,10 @@
-package files.object;
+package files.model;
 
 import java.time.Instant;
 
-public class Admin {
+public class Admin implements Comparable<Admin> {
 
-    private int id;
+    private static long id;
     private String username;
     private String password;
     private String name;
@@ -15,11 +15,12 @@ public class Admin {
     private Instant creatDate;
     private Instant updateDate;
 
+
     public Admin() {
 
     }
 
-    public Admin(int id, String username, String password, String name, String phone, String email, String address, Role role) {
+    public Admin(long id, String username, String password, String name, String phone, String email, String address, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -33,7 +34,7 @@ public class Admin {
     public static Admin parseAdmin(String rar) {
         Admin admin = new Admin();
         String[] strings = rar.split(",");
-        admin.id = Integer.parseInt(strings[0]);
+        admin.id = Long.parseLong(strings[0]);
         admin.username = strings[1];
         admin.password = strings[2];
         admin.name = strings[3];
@@ -58,7 +59,7 @@ public class Admin {
         return phone;
     }
 
-    public String getName() {
+    public  String getName() {
         return name;
     }
 
@@ -95,11 +96,11 @@ public class Admin {
         this.creatDate = creatDate;
     }
 
-    public int getId() {
+    public static long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -144,5 +145,14 @@ public class Admin {
                 role + "," +
                 creatDate + ","
                 + updateDate;
+    }
+
+    @Override
+    public int compareTo(Admin o) {
+        if (id - o.id == 0) {
+            return name.compareTo(o.name);
+        } else {
+            return (int) (id - o.id);
+        }
     }
 }

@@ -1,20 +1,29 @@
 package files.service;
 
-import files.object.Techs;
+import files.model.Techs;
 
 import java.util.List;
 
 public interface ITechsSevice {
-    List<Techs> getTechs();
+
+//    List<Techs> getTechs();
+
+   List<Techs> getTechs();
 
     void add(Techs newTechs);
 
-    void update(Techs newTechs);
+    void updateName(Techs newTechs);
+
+    void updatePrice(Techs newTechs);
+
+    void updateQuantity(Techs newTechs);
+
+    void updateDescription(Techs newTechs);
 
     void remove(Techs newTechs);
 
-    boolean existById(int id);
+    boolean existById(long id);
 
-    Techs getTechsById(int id);
+    Techs getTechsById(long id);
 
 }

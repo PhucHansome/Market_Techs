@@ -25,6 +25,9 @@ public class Menu {
     public static void  lauchMainMenu() {
         boolean is = false;
         do {
+            try {
+
+
             mainMenu();
             System.out.println("\nSelect Function");
             System.out.print("☛ ");
@@ -37,7 +40,7 @@ public class Menu {
                     TechsProductView.run();
                     break;
                 case 3:
-                    OrderView.run();
+                    OrderViewLauncher.run();
                     break;
                 case 4:
                     Menu.exit();
@@ -47,6 +50,9 @@ public class Menu {
                     Menu.lauchMainMenu();
                     is = true;
                     break;
+            }
+            }catch (Exception E){
+                System.out.println("Incorrect! Please Try Again!");
             }
         } while (!is);
     }

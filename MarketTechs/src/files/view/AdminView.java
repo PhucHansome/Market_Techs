@@ -254,11 +254,11 @@ public class AdminView {
 
     public void showAdmin() {
         System.out.println("----------------------------------------------------------------------------LIST CUSTOMER----------------------------------------------------------------------------");
-        System.out.printf("%-15s %-22s %-15s %-30s %-20s %-15s %-15s \n\n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
+        System.out.printf("%-15s%-22s%-15s%-30s%-20s%-15s%-15s\n\n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
         List<Admin> admins = adminService.getAdmin();
         Collections.sort(admins);
         for (Admin admin : admins) {
-            System.out.printf("%-15d %-22s %-15s %-30s %-20s %-15s %-15s  \n\n", admin.getId(), admin.getName(), admin.getPhone(), admin.getEmail(), admin.getAddress(), admin.getRole(), InstantUtils.instantToString(admin.getCreatDate()));
+            System.out.printf("%-15d%-22s%-15s%-30s%-20s%-15s%-15s  \n\n", admin.getId(), admin.getName(), admin.getPhone(), admin.getEmail(), admin.getAddress(), admin.getRole(), InstantUtils.instantToString(admin.getCreatDate()));
 
         }
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -406,11 +406,11 @@ public class AdminView {
 
     public void showUser1() {
         System.out.println("-----------------------------------------------------------------------LIST CUSTOMER-----------------------------------------------------------------------");
-        System.out.printf("%-15s %-22s %-15s %-30s %-20s %-10s %-10s \n\n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
+        System.out.printf("%-15s%-22s%-15s-30s%-20s%-10s%-10s\n\n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
         List<Admin> admins = adminService.getAdmin();
         Collections.sort(admins);
         for (Admin admin : admins) {
-            System.out.printf("%-15d %-22s %-15s %-30s %-20s %-10s %-10s  \n\n", admin.getId(), admin.getName(), admin.getPhone(), admin.getEmail(), admin.getAddress(), admin.getRole(), InstantUtils.instantToString(admin.getCreatDate()));
+            System.out.printf("%-15d%-22s%-15s%-30s%-20s%-10s%-10s  \n\n", admin.getId(), admin.getName(), admin.getPhone(), admin.getEmail(), admin.getAddress(), admin.getRole(), InstantUtils.instantToString(admin.getCreatDate()));
 
         }
         System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");

@@ -26,43 +26,43 @@ public class OrderView {
     }
 
     public OrderItem addOrderItems(long orderId) {
-        try {
-
-
-        orderItemService.findAll();
-        TechsProduct techsProductView = new TechsProduct();
-        techsProductView.showTechs1();
-        long id = System.currentTimeMillis() / 1000;
-        System.out.println("Press Product Id: ");
-        System.out.print("⭆ ");
-        int techsId = Integer.parseInt(scanner.nextLine());
-        while (!techsSevice.existById(techsId)) {
-            System.out.println("Product ID Does Not Exist ");
-            System.out.println("Press Product Id:: ");
-            System.out.print("⭆ ");
-            techsId = Integer.parseInt(scanner.nextLine());
-        }
-        Techs product = techsSevice.getTechsById(techsId);
-        double price = product.getPriceTechs();
-        int oldQuantity = product.getQuantityTechs();
-        System.out.println("Press Quantity");
-        System.out.print("⭆ ");
-        int quantity = Integer.parseInt(scanner.nextLine());
-        while (!checkQualityTechs(product, quantity)) {
-            System.out.println("Exceeded Quantity! Please Try again");
-            System.out.println("Press Quantity: ");
-            System.out.print("⭆ ");
-            quantity = Integer.parseInt(scanner.nextLine());
-        }
-        String Techname = product.getNameTechs();
-        double total = quantity * price;
-        int currentQuantity = oldQuantity - quantity;
-        product.setQuantityTechs(currentQuantity);
-        OrderItem orderItem = new OrderItem(id, price, quantity, orderId, techsId, Techname, total);
-        return orderItem;
-        }catch (Exception e){
-            System.out.println("Incorrect! Please Try Again!!");
-        }
+        do {
+            try {
+                orderItemService.findAll();
+                TechsProduct techsProductView = new TechsProduct();
+                techsProductView.showTechs1();
+                long id = System.currentTimeMillis() / 1000;
+                System.out.println("Press Product Id: ");
+                System.out.print("⭆ ");
+                int techsId = Integer.parseInt(scanner.nextLine());
+                while (!techsSevice.existById(techsId)) {
+                    System.out.println("Product ID Does Not Exist ");
+                    System.out.println("Press Product Id:: ");
+                    System.out.print("⭆ ");
+                    techsId = Integer.parseInt(scanner.nextLine());
+                }
+                Techs product = techsSevice.getTechsById(techsId);
+                double price = product.getPriceTechs();
+                int oldQuantity = product.getQuantityTechs();
+                System.out.println("Press Quantity");
+                System.out.print("⭆ ");
+                int quantity = Integer.parseInt(scanner.nextLine());
+                while (!checkQualityTechs(product, quantity)) {
+                    System.out.println("Exceeded Quantity! Please Try again");
+                    System.out.println("Press Quantity: ");
+                    System.out.print("⭆ ");
+                    quantity = Integer.parseInt(scanner.nextLine());
+                }
+                String Techname = product.getNameTechs();
+                double total = quantity * price;
+                int currentQuantity = oldQuantity - quantity;
+                product.setQuantityTechs(currentQuantity);
+                OrderItem orderItem = new OrderItem(id, price, quantity, orderId, techsId, Techname, total);
+                return orderItem;
+            } catch (Exception e) {
+                System.out.println("Incorrect! Please Try Again!!");
+            }
+        } while (true);
     }
 
     public boolean checkQualityTechs(Techs techs, int quantity) {
@@ -97,7 +97,7 @@ public class OrderView {
             System.out.println("Press Address:");
             System.out.print(" ⭆ ");
             String address = scanner.nextLine();
-            while (address.isEmpty()){
+            while (address.isEmpty()) {
                 System.out.println("Can't Be Left Empty");
                 System.out.println("Press Address:");
                 System.out.print(" ⭆ ");
@@ -134,7 +134,7 @@ public class OrderView {
                         System.exit(0);
                         break;
                     default:
-                        System.out.println("");
+                        System.out.println("Incorrect! Please Try Again!!");
                         break;
                 }
             } while (true);

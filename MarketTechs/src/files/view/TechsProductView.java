@@ -28,9 +28,12 @@ public class TechsProductView {
                         techsProduct.showTechs();
                         break;
                     case 5:
-                        Menu.lauchMainMenu();
+                        techsProduct.searchByNameProduct();
                         break;
                     case 6:
+                        Menu.lauchMainMenu();
+                        break;
+                    case 7:
                         Menu.exit();
                         System.exit(0);
                         break;

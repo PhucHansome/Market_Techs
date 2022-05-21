@@ -77,8 +77,9 @@ public class Menu {
         System.out.println("\t♉           2. Edit Products Information            ♉");
         System.out.println("\t♉           3. Delete Products                      ♉");
         System.out.println("\t♉           4. Show All Products                    ♉");
-        System.out.println("\t♉           5. Back Main Menu                       ♉");
-        System.out.println("\t♉           6. Exit                                 ♉");
+        System.out.println("\t♉           5. Search By Name Product               ♉");
+        System.out.println("\t♉           6. Back Main Menu                       ♉");
+        System.out.println("\t♉           7. Exit                                 ♉");
         System.out.println("\t♉                                                   ♉");
         System.out.println("\t♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉ ♉");
     }

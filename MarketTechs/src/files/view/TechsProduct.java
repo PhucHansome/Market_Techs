@@ -8,6 +8,7 @@ import files.utils.InstantUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 
@@ -15,7 +16,7 @@ public class TechsProduct {
     private final ITechsSevice techsSevice;
     private final Scanner scanner = new Scanner(System.in);
 
-    public  TechsProduct() {
+    public TechsProduct() {
         techsSevice = TechsSevice.getInstance();
     }
 
@@ -216,11 +217,11 @@ public class TechsProduct {
 
     public void showTechs() {
         System.out.println("--------------------------------------------------------------------------LISTTECHS--------------------------------------------------------");
-        System.out.printf("%-15s %-20s %-15s %-20s %-20s %-20s %-20s\n\n", "Id", "Name Techs", "Price Techs", "Quantity Techs", "Type", "Date Creat", "Date Update");
+        System.out.printf("%-15s %-25s %-15s %-10s %-20s %-20s %-20s\n\n", "Id", "Product Name", "Price", "Quantity", "Type", "Date Creat", "Date Update");
         List<Techs> techs = techsSevice.getTechs();
         Collections.sort(techs);
         for (Techs techs1 : techs) {
-            System.out.printf("%-15d %-20s %-15s %-20d %-20s %-20s %-20s \n\n", techs1.getId(), techs1.getNameTechs(), AppUtils.doubleToVND(techs1.getPriceTechs()), techs1.getQuantityTechs(), techs1.getType(), InstantUtils.instantToString(techs1.getCreatDate()), techs1.getUpdateDate() == null ? "" : InstantUtils.instantToString(techs1.getUpdateDate()));
+            System.out.printf("%-15d %-25s %-15s %-10d %-20s %-20s %-20s \n\n", techs1.getId(), techs1.getNameTechs(), AppUtils.doubleToVND(techs1.getPriceTechs()), techs1.getQuantityTechs(), techs1.getType(), InstantUtils.instantToString(techs1.getCreatDate()), techs1.getUpdateDate() == null ? "" : InstantUtils.instantToString(techs1.getUpdateDate()));
         }
         System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
         isRetry(InputOption.SHOW);
@@ -228,15 +229,15 @@ public class TechsProduct {
 
     public static void showTechs1() {
         TechsSevice techsSevice = new TechsSevice();
-        System.out.println("--------------------------------------------------------------------------LISTTECHS------------------------------------------------------");
-        System.out.printf("%-15s %-20s %-15s %-20s %-30s %-20s %-20s\n\n", "Id", "Name Techs", "Price Techs", "Quantity Techs", "Type", "Date Creat", "Date Update");
+        System.out.println("------------------------------------------------------------LISTPRODUCT---------------------------------------------------------");
+        System.out.printf("%-15s %-25s %-15s %-10s %-20s %-20s %-20s\n\n", "Id", "Product Name", "Price", "Quantity", "Type", "Date Creat", "Date Update");
         List<Techs> techs = techsSevice.getTechs();
         Collections.sort(techs);
         for (Techs techs1 : techs) {
-            System.out.printf("%-15d %-20s %-15s %-20d %-30s %-20s %-20s \n\n", techs1.getId(), techs1.getNameTechs(), AppUtils.doubleToVND(techs1.getPriceTechs()), techs1.getQuantityTechs(), techs1.getType(), InstantUtils.instantToString(techs1.getCreatDate()), techs1.getUpdateDate() == null ? "" : InstantUtils.instantToString(techs1.getUpdateDate()));
+            System.out.printf("%-15d %-25s %-15s %-10d %-20s %-20s %-20s \n\n", techs1.getId(), techs1.getNameTechs(), AppUtils.doubleToVND(techs1.getPriceTechs()), techs1.getQuantityTechs(), techs1.getType(), InstantUtils.instantToString(techs1.getCreatDate()), techs1.getUpdateDate() == null ? "" : InstantUtils.instantToString(techs1.getUpdateDate()));
             ;
         }
-        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public void updateProductTechs() {
@@ -363,5 +364,54 @@ public class TechsProduct {
                 System.out.println("Incorrect! please try again!!");
             }
         } while (is);
+    }
+
+    public void searchByNameProduct() {
+        List<Techs> techs = techsSevice.getTechs();
+        int count = 0;
+        System.out.println();
+        System.out.println("Press Your Product You Wanna Search: ");
+        String search = scanner.nextLine();
+        System.out.println("Keyword search results '" + search + "' Are:");
+        search = search.toLowerCase();
+        System.out.println("----------------------------------------------------------------------------------------------------------");
+        System.out.printf("%-15s %-20s %-20s %-15s %-20s %-20s\n",
+                "Id", "Name Product", "Type", "Quantity","Price","Creat Date" );
+        for (Techs techs1 : techs){
+            if(techs1.getNameTechs().toLowerCase().contains(search)){
+                count++;
+                System.out.printf("%-15d %-20s %-20s %-15d %-20s %-20s\n",
+                        techs1.getId(),
+                        techs1.getNameTechs(),
+                        techs1.getType(),
+                        techs1.getQuantityTechs(),
+                        AppUtils.doubleToVND(techs1.getPriceTechs()) ,
+                        InstantUtils.instantToString(techs1.getCreatDate()));
+            }
+        }
+        showReturnSearch(count);
+        System.out.println();
+        TechsProductView.run();
+    }
+    public void showReturnSearch(int count){
+        System.out.println();
+        System.out.println();
+        System.out.println("We Have a '" + count +  "'Be Found\n");
+        char press = ' ';
+        do {
+            System.out.println("Press 'r' Turn back ");
+            try {
+                press = scanner.nextLine().charAt(0);
+            }catch (Exception e){
+                press = ' ';
+            }
+            switch (press){
+                case 'r':
+                case 'R':
+                    TechsProductView.run();
+                    break;
+                default:
+            }
+        }while (true);
     }
 }

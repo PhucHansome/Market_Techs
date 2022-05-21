@@ -26,4 +26,5 @@ public interface ITechsSevice {
 
     Techs getTechsById(long id);
 
+
 }

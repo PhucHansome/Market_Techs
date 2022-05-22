@@ -31,7 +31,7 @@ public class TechsProductView {
                         techsProduct.searchByNameProduct();
                         break;
                     case 6:
-                        Menu.lauchMainMenu();
+                        Menu.MainMenu();
                         break;
                     case 7:
                         Menu.exit();

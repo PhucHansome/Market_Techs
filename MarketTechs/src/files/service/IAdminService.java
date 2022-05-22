@@ -11,6 +11,8 @@ public interface IAdminService {
 
     void add(Admin newAdmin);
 
+    void update();
+
     void updateName(Admin newAdmin);
 
     void updatePhone(Admin newAdmin);
@@ -28,6 +30,8 @@ public interface IAdminService {
     boolean checkDuplicateUserName(String userName);
 
     Admin getUserById(long id);
+
+    Admin getUserByAdminName(String userName);
 
 }
 

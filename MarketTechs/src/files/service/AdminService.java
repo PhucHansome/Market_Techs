@@ -43,6 +43,12 @@ public class AdminService implements IAdminService {
     }
 
     @Override
+    public void update() {
+        List<Admin> admins = getAdmin();
+        CSVUtils.write(path, admins);
+    }
+
+    @Override
     public boolean existById(long id) {
         return getUserById(id) != null;
     }
@@ -145,6 +151,15 @@ public class AdminService implements IAdminService {
         for (Admin admin : admins) {
             if (admin.getId() == id)
                 return admin;
+        }
+        return null;
+    }
+    public Admin getUserByAdminName(String userName){
+        List<Admin> admins = getAdmin();
+        for (Admin admin: admins){
+            if(admin.getUsername().equals(userName)){
+                return admin;
+            }
         }
         return null;
     }

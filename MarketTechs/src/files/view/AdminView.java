@@ -1,5 +1,6 @@
 package files.view;
 
+import files.Main;
 import files.model.Admin;
 import files.model.Role;
 import files.service.AdminService;
@@ -339,6 +340,7 @@ public class AdminView {
                     System.out.println("Username");
                     System.out.print(" ⭆ ");
                     username = scanner.nextLine();
+                    ForgotPassword.backToEarlier1(username);
                     if (username.isEmpty()) {
                         System.out.println("Incorrect! please try again!!");
                         check = true;
@@ -360,13 +362,16 @@ public class AdminView {
                     }
                 } while (check);
 
-                if (adminService.loginAdmin(username, password) == null) {
+                if (adminService.loginAdmin(username, password) != null) {
+                    Admin admin = adminService.getUserByAdminName(username);
+                    if (admin.getRole() == Role.ADMIN) {
+                        System.out.println("Please Enter Email To Confirm");
+                        checkLoginEmailAdmin(admin.getEmail());
+                    }
+                } else {
                     System.out.println("This Account Is Invalid ");
                     isRetry = isRetry();
-                } else {
-                    System.out.println("\tLogged In Successfully!! \n");
-                    System.out.println("\tWellcome To The Technology Market\n");
-                    isRetry = false;
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -406,7 +411,7 @@ public class AdminView {
 
     public void showUser1() {
         System.out.println("-----------------------------------------------------------------------LIST CUSTOMER-----------------------------------------------------------------------");
-        System.out.printf("%-15s%-22s%-15s-30s%-20s%-10s%-10s\n\n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
+        System.out.printf("%-15s%-22s%-15s%-30s%-20s%-10s%-10s\n\n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
         List<Admin> admins = adminService.getAdmin();
         Collections.sort(admins);
         for (Admin admin : admins) {
@@ -472,6 +477,19 @@ public class AdminView {
             }
         } catch (Exception e) {
             System.out.println("Incorrect! Please try again!!");
+        }
+    }
+
+    public void checkLoginEmailAdmin(String emailAdmin) {
+        String email = scanner.nextLine().toLowerCase();
+        if (!email.equals(emailAdmin)) {
+            System.out.println("Email Incorrect!Please try again!!");
+            System.out.print("➲  ");
+            checkLoginEmailAdmin(emailAdmin);
+        } else {
+            System.out.println("\tYou Successful login\n");
+            System.out.println("\tWellcome to the Market Technology\n");
+            Menu.MainMenu();
         }
     }
 }

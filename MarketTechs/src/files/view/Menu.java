@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Menu {
     public static Scanner scanner = new Scanner(System.in);
+    private static ForgotPassword forgotPassword;
 
 
     public static void mainMenu() {
@@ -17,44 +18,66 @@ public class Menu {
         System.out.println("\t❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂");
     }
 
-    public static void login(){
+    public static void login() {
         AdminView adminView = new AdminView();
         adminView.adminLogin();
-        lauchMainMenu();
+        MainMenu();
     }
-    public static void  lauchMainMenu() {
+
+    public static void MainMenu() {
         boolean is = false;
         do {
             try {
-
-
-            mainMenu();
-            System.out.println("\nSelect Function");
-            System.out.print("☛ ");
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1:
-                    AdminViewLaucher.run();
-                    break;
-                case 2:
-                    TechsProductView.run();
-                    break;
-                case 3:
-                    OrderViewLauncher.run();
-                    break;
-                case 4:
-                    Menu.exit();
-                    System.exit(0);
-                    break;
-                default:
-                    Menu.lauchMainMenu();
-                    is = true;
-                    break;
-            }
-            }catch (Exception E){
+                mainMenu();
+                System.out.println("\nSelect Function");
+                System.out.print("☛ ");
+                int choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1:
+                        AdminViewLaucher.run();
+                        break;
+                    case 2:
+                        TechsProductView.run();
+                        break;
+                    case 3:
+                        OrderViewLauncher.run();
+                        break;
+                    case 4:
+                        Menu.exit();
+                        System.exit(0);
+                        break;
+                    default:
+                        Menu.MainMenu();
+                        is = true;
+                        break;
+                }
+            } catch (Exception E) {
                 System.out.println("Incorrect! Please Try Again!");
             }
         } while (!is);
+    }
+
+    public static void firstMenu() {
+        do {
+            try {
+                firstLauch();
+                System.out.println("\nSelect Function");
+                System.out.print("☛ ");
+                int choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1:
+                        login();
+                        break;
+                    case 2:
+                        ForgotPassword.menuForgot();
+                        break;
+                    default:
+                        System.out.println("Incorrect! Please Try Again!!");
+                }
+                }catch(Exception e) {
+                System.out.println("Incorrect! Please Try Again!!");
+            }
+        }while (true) ;
     }
 
     public static void userMenu() {
@@ -94,17 +117,21 @@ public class Menu {
         System.out.println("\t♧                                                    ♧");
         System.out.println("\t♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧ ♧  ♧");
     }
-    public static void firstLauch(){
+
+    public static void firstLauch() {
         System.out.println("\t♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎LOGIN♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎");
-        System.out.println("\t♎                                       ♎");
-        System.out.println("\t♎           1. Management Login         ♎");
-        System.out.println("\t♎           2. Registration User        ♎");
-        System.out.println("\t♎                                       ♎");
+        System.out.println("\t♎                                        ♎");
+        System.out.println("\t♎           1. Management Login          ♎");
+        System.out.println("\t♎           2. Forgot Password           ♎");
+        System.out.println("\t♎                                        ♎");
         System.out.println("\t♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎");
 
     }
-    public static void exit(){
+
+    public static void exit() {
         System.out.println("\tTạm biệt! Hẹn gặp lại");
         System.exit(5);
     }
 }
+
+

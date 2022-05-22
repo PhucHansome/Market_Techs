@@ -8,8 +8,6 @@ import files.utils.AppUtils;
 import files.utils.InstantUtils;
 import files.utils.ValidateUtils;
 
-import java.awt.*;
-import java.time.Instant;
 import java.util.List;
 import java.util.Scanner;
 
@@ -164,9 +162,8 @@ public class OrderView {
             System.out.println("                                             ๖ۣۜP๖ۣۜH๖ۣۜU๖ۣۜC ๖ۣۜN๖ۣۜG๖ۣۜU๖ۣۜY๖ۣۜE๖ۣۜN");
             boolean is = true;
             do {
-                System.out.println("Nhấn 'q' để trở lại \t|\t 't' để thoát chương trình");
-                System.out.println("Nhấn ");
-                System.out.print(" ⭆ ");
+                System.out.println("Enter 'q' Turn Back \t|\t 't' Exit");
+                System.out.print("⭆ ");
                 String choice = scanner.nextLine();
                 switch (choice) {
                     case "q":
@@ -190,9 +187,8 @@ public class OrderView {
         List<OrderItem> orderItems = orderItemService.findAll();
         OrderItem newOrderItem = new OrderItem();
         try {
-            System.out.println("----------------------------------------------------------LIST ORDER--------------------------------------------------------------------");
-            System.out.println("|                                                                                                                                      |");
-            System.out.printf("|%-15s %-20s %-12s %-23s %-10s %-10s %-15s %-21s\n|", "   Id", "Tên khách hàng", "  SĐT", "Địa chỉ", "Tên bánh", "Số lượng", "   Giá", "   Tổng" + "               |");
+            double sum = 0;
+            System.out.println("----------------------------------------------------------------------LIST ORDER--------------------------------------------------------------------------------");
             for (Order order : orders) {
                 for (OrderItem orderItem : orderItems) {
                     if (orderItem.getOrderId() == order.getId()) {
@@ -200,20 +196,18 @@ public class OrderView {
                         break;
                     }
                 }
-                System.out.printf("%-15s %-20s %-12s %-23s %-10s %-10d %-15s %-21s|\n",
-                        order.getId()
-                        , order.getFullName(),
-                        order.getMobile(),
-                        order.getAddress(),
-                        newOrderItem.getProductName()
-                        , newOrderItem.getQuantity(),
-                        newOrderItem.getPrice(),
-                        AppUtils.doubleToVND(newOrderItem.getQuantity() * newOrderItem.getPrice()
-                        )
-                );
+                double result = newOrderItem.getQuantity() * newOrderItem.getPrice();
+                sum +=  result;
+                System.out.println("================================================================================================================================================================");
+                System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%41s|\n","Id: ",order.getId()," ","Customer Name",order.getFullName(),"");
+                System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%41s|\n","Number Phone: ", order.getMobile()," ","Address: ", order.getAddress(),"");
+                System.out.printf("|\t%-20s%-20s%-30s%-20s%-20d%-20s%-10s%-15s\t|\n","Product Name",newOrderItem.getProductName()," ","Quantity",newOrderItem.getQuantity(),
+                " ", "Prince",AppUtils.doubleToVND(newOrderItem.getPrice()));
+                System.out.println("======================================================================================================================================== total: "+ AppUtils.doubleToVND(result)+"\n");
+
             }
-            System.out.println("                                                                                                                         |");
-            System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("|-------------------Total Revenue:"+ AppUtils.doubleToVND(sum)+"-------------------|");
+            System.out.println("===================================================================");
             boolean is = true;
             do {
                 System.out.println("Nhấn 'q' để trở lại \t|\t 't' để thoát chương trình");

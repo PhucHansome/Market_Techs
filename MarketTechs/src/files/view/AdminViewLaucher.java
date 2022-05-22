@@ -29,13 +29,13 @@ public class AdminViewLaucher {
                         adminView.showAdmin();
                         break;
                     case 5:
-                        Menu.lauchMainMenu();
+                        Menu.MainMenu();
                         break;
                     case 6:
                         Menu.exit();
                         System.exit(0);
                     default:
-                        System.out.println("Chọn chức năng không đúng! vui lòng chọn lại");
+                        System.out.println("Incorrect! Please Try Again!");
                         break;
                 }
             }catch (Exception E){

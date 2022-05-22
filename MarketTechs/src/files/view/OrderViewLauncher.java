@@ -20,7 +20,7 @@ public class OrderViewLauncher {
                     orderView.showAllOrder();
                     break;
                 case 3:
-                    Menu.lauchMainMenu();
+                    Menu.MainMenu();
                     break;
                 case 4:
                     Menu.exit();

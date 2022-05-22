@@ -1,6 +1,7 @@
 package files.model;
 
 import java.time.Instant;
+import java.util.Objects;
 
 public class Techs implements Comparable<Techs> {
 
@@ -116,5 +117,18 @@ public class Techs implements Comparable<Techs> {
             }
         }
         return (int) (priceTechs - o.priceTechs);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Techs techs = (Techs) o;
+        return id == techs.id && quantityTechs == techs.quantityTechs && priceTechs == techs.priceTechs && Objects.equals(nameTechs, techs.nameTechs);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nameTechs, priceTechs, quantityTechs);
     }
 }

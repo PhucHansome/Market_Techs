@@ -142,10 +142,16 @@ public class TechsProduct {
     private String inputType(InputOption option) {
         switch (option) {
             case ADD:
-                System.out.println("Press your Type Product: ");
+                System.out.println("Choice your Type Product: \n" +
+                        "1. SmartPhone\n" +
+                        "2. Laptop\n" +
+                        "3. Accessory");
                 break;
             case UPDATE:
-                System.out.println("Press your new Type Product: ");
+                System.out.println("Choice your new Type Product: \n" +
+                        "1. SmartPhone\n" +
+                        "2. Laptop\n" +
+                        "3. Accessory ");
                 break;
         }
         boolean is = true;
@@ -164,6 +170,7 @@ public class TechsProduct {
                 System.out.println("Incorrect! Please Try Again!");
             }
         } while (is);
+
         return type;
     }
 
@@ -378,7 +385,7 @@ public class TechsProduct {
         System.out.printf("%-15s %-20s %-20s %-15s %-20s %-20s\n",
                 "Id", "Name Product", "Type", "Quantity","Price","Creat Date" );
         for (Techs techs1 : techs){
-            if(techs1.getNameTechs().toLowerCase().contains(search)){
+            if(techs1.toString().toLowerCase().contains(search)){
                 count++;
                 System.out.printf("%-15d %-20s %-20s %-15d %-20s %-20s\n",
                         techs1.getId(),

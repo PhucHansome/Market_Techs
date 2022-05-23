@@ -53,9 +53,8 @@ public class OrderView {
                 }
                 String Techname = product.getNameTechs();
                 double total = quantity * price;
-                int currentQuantity = oldQuantity - quantity;
-                product.setQuantityTechs(currentQuantity);
                 OrderItem orderItem = new OrderItem(id, price, quantity, orderId, techsId, Techname, total);
+                techsSevice.updateQuantityy(techsId,quantity);
                 return orderItem;
             } catch (Exception e) {
                 System.out.println("Incorrect! Please Try Again!!");

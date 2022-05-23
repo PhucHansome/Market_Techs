@@ -27,4 +27,5 @@ public interface ITechsSevice {
     Techs getTechsById(long id);
 
 
+    void updateQuantityy(long id, int quantity);
 }

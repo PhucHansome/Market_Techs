@@ -1,5 +1,6 @@
 package files.service;
 
+import files.model.OrderItem;
 import files.model.Techs;
 import files.utils.CSVUtils;
 
@@ -121,6 +122,19 @@ public class TechsSevice implements ITechsSevice {
                 return tech;
         }
         return null;
+    }
+
+    @Override
+    public void updateQuantityy(long id, int quantity) {
+        List<Techs> techs = getTechs();
+        for (Techs techss : techs) {
+            if (techss.getId() == id)
+                if (techss.getQuantityTechs() >= quantity) {
+                    techss.setQuantityTechs(techss.getQuantityTechs() - quantity);
+                    CSVUtils.write(path, techs);
+                    break;
+                }
+        }
     }
 
     public void update() {

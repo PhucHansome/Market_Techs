@@ -39,9 +39,10 @@ public class ForgotPassword {
 
     private static void changePassWord() {
         Admin admin = fressInforAdmin();
-        admin.setPassword("123456789");
-        System.out.println("Password Has Been Reset Default! Password Is: " + admin.getPassword());
-        adminService.update();
+//        admin.setPassword("123456789");
+        adminService.update(admin);
+        System.out.println("Password Has Been Reset Default! Password Is: 123456789 " );
+//        adminService.update();
     }
 
     private static Admin fressInforAdmin() {

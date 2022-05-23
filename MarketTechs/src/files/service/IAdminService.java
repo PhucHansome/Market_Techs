@@ -11,7 +11,7 @@ public interface IAdminService {
 
     void add(Admin newAdmin);
 
-    void update();
+    void update(Admin newAdmin);
 
     void updateName(Admin newAdmin);
 

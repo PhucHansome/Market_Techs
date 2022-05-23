@@ -374,7 +374,6 @@ public class AdminView {
 
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 System.out.println("Incorrect! Please Try Again!!");
             }
         } while (isRetry);
@@ -483,6 +482,8 @@ public class AdminView {
     public void checkLoginEmailAdmin(String emailAdmin) {
         String email = scanner.nextLine().toLowerCase();
         if (!email.equals(emailAdmin)) {
+            ForgotPassword.backToEarlier1(email);
+            System.out.println("Enter '-10' Turn back Menu Forgot Password ");
             System.out.println("Email Incorrect!Please try again!!");
             System.out.print("➲  ");
             checkLoginEmailAdmin(emailAdmin);

@@ -43,7 +43,6 @@ public class TechsProductView {
                 }
             } catch (Exception e) {
                 System.out.println("Incorrect! Please Try Again");
-                e.printStackTrace();
             }
         } while (!is);
     }

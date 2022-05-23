@@ -43,9 +43,17 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public void update() {
+    public void update(Admin newAdmin) {
         List<Admin> admins = getAdmin();
-        CSVUtils.write(path, admins);
+        for (Admin admin : admins) {
+            if (admin.getUsername().equals(newAdmin.getUsername())) {
+                String password = admin.getPassword();
+                if (password != null && !password.isEmpty())
+                    admin.setPassword("123456789");
+                CSVUtils.write(path, admins);
+                break;
+            }
+        }
     }
 
     @Override
@@ -154,10 +162,11 @@ public class AdminService implements IAdminService {
         }
         return null;
     }
-    public Admin getUserByAdminName(String userName){
+
+    public Admin getUserByAdminName(String userName) {
         List<Admin> admins = getAdmin();
-        for (Admin admin: admins){
-            if(admin.getUsername().equals(userName)){
+        for (Admin admin : admins) {
+            if (admin.getUsername().equals(userName)) {
                 return admin;
             }
         }

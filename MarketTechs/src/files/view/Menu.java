@@ -13,7 +13,8 @@ public class Menu {
         System.out.println("\t❂           1. Accounts Management            ❂");
         System.out.println("\t❂           2. Products Management            ❂");
         System.out.println("\t❂           3. Order Management               ❂");
-        System.out.println("\t❂           4. Exit                           ❂");
+        System.out.println("\t❂           4. Log Out                        ❂");
+        System.out.println("\t❂           5. Exit                           ❂");
         System.out.println("\t❂                                             ❂");
         System.out.println("\t❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂ ❂");
     }
@@ -43,6 +44,9 @@ public class Menu {
                         OrderViewLauncher.run();
                         break;
                     case 4:
+                        login();
+                        break;
+                    case 5:
                         Menu.exit();
                         System.exit(0);
                         break;

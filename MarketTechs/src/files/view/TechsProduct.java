@@ -381,7 +381,7 @@ public class TechsProduct {
         String search = scanner.nextLine();
         System.out.println("Keyword search results '" + search + "' Are:");
         search = search.toLowerCase();
-        System.out.println("----------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------");
         System.out.printf("%-15s %-20s %-20s %-15s %-20s %-20s\n",
                 "Id", "Name Product", "Type", "Quantity","Price","Creat Date" );
         for (Techs techs1 : techs){

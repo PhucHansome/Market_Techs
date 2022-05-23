@@ -8,6 +8,7 @@ import files.utils.AppUtils;
 import files.utils.InstantUtils;
 import files.utils.ValidateUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,7 +24,7 @@ public class OrderView {
         orderItemService = OrderItemService.getInstance();
     }
 
-    public OrderItem addOrderItems(long orderId) {
+    public OrderItem addOrderItem(long orderId) {
         do {
             try {
                 orderItemService.findAll();
@@ -41,7 +42,6 @@ public class OrderView {
                 }
                 Techs product = techsSevice.getTechsById(techsId);
                 double price = product.getPriceTechs();
-                int oldQuantity = product.getQuantityTechs();
                 System.out.println("Press Quantity");
                 System.out.print("⭆ ");
                 int quantity = Integer.parseInt(scanner.nextLine());
@@ -54,7 +54,7 @@ public class OrderView {
                 String Techname = product.getNameTechs();
                 double total = quantity * price;
                 OrderItem orderItem = new OrderItem(id, price, quantity, orderId, techsId, Techname, total);
-                techsSevice.updateQuantityy(techsId,quantity);
+                techsSevice.updateQuantityy(techsId, quantity);
                 return orderItem;
             } catch (Exception e) {
                 System.out.println("Incorrect! Please Try Again!!");
@@ -100,10 +100,14 @@ public class OrderView {
                 System.out.print(" ⭆ ");
                 address = scanner.nextLine();
             }
-            OrderItem orderItem = addOrderItems(orderId);
             Order order = new Order(orderId, name, phone, address);
-            orderItemService.add(orderItem);
             orderService.add(order);
+            List<OrderItem> orderItems = addOrderItems(orderId);
+
+            for (OrderItem orderItem : orderItems) {
+                orderItemService.add(orderItem);
+            }
+
             System.out.println("Order Creation Successful");
             System.out.println("㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡");
             System.out.println("㋡                                         ㋡");
@@ -118,10 +122,10 @@ public class OrderView {
                 int choice = Integer.parseInt(scanner.nextLine());
                 switch (choice) {
                     case 1:
-                        addOrder();
+                        addOrderItems(orderId);
                         break;
                     case 2:
-                        showPaymentInfo(orderItem, order);
+                        showPaymentInfo(order);
                         break;
                     case 3:
                         OrderViewLauncher.run();
@@ -140,7 +144,8 @@ public class OrderView {
         }
     }
 
-    public void showPaymentInfo(OrderItem orderItem, Order order) {
+    public void showPaymentInfo(Order order) {
+
         try {
             System.out.println("=============================================================================");
             System.out.println("|                                   BILL                                    |");
@@ -151,11 +156,20 @@ public class OrderView {
             System.out.printf("|\t%-20s\t %-25s %20s |\n", "Creat Date  : ", InstantUtils.instantToString(order.getCreatedAt()), "");
             System.out.println("=============================================================================");
             System.out.printf(" %-20s\t %-25s %-25s \n", "Product Name", "Quantity", "Price");
-            System.out.printf(" %-20s\t %-25s %-25s \n",
-                    orderItem.getProductName(),
-                    orderItem.getQuantity(),
-                    AppUtils.doubleToVND(orderItem.getPrice()));
-            System.out.println("                                             Total:" + AppUtils.doubleToVND(orderItem.getQuantity() * orderItem.getPrice()) + "\n");
+            List<OrderItem> orderItem = orderItemService.findAll();
+            double sum = 0;
+            for (OrderItem orderItem1 : orderItem) {
+                if (orderItem1.getOrderId() == order.getId()) {
+                    double result = (orderItem1.getQuantity() * orderItem1.getPrice());
+                    sum += result;
+
+                    System.out.printf(" %-20s\t %-25s %-25s \n",
+                            orderItem1.getProductName(),
+                            orderItem1.getQuantity(),
+                            AppUtils.doubleToVND(orderItem1.getPrice()));
+                }
+            }
+            System.out.println("                                             Total:" + AppUtils.doubleToVND(sum) + "\n");
             System.out.println("-------------------------------Technology Market-----------------------------\n");
             System.out.println("                                                     Sign\n\n");
             System.out.println("                                             ๖ۣۜP๖ۣۜH๖ۣۜU๖ۣۜC ๖ۣۜN๖ۣۜG๖ۣۜU๖ۣۜY๖ۣۜE๖ۣۜN");
@@ -192,7 +206,7 @@ public class OrderView {
                 for (OrderItem orderItem : orderItems) {
                     if (orderItem.getOrderId() == order.getId()) {
                         newOrderItem = orderItem;
-                        break;
+//                        break;
                     }
                 }
                 double result = newOrderItem.getQuantity() * newOrderItem.getPrice();
@@ -220,12 +234,24 @@ public class OrderView {
                         AppUtils.exit();
                         break;
                     default:
-                        System.out.println("Nhấn không đúng! vui lòng nhập lại");
+                        System.out.println("Incorrect! Please Try Again!!");
                         is = false;
                 }
             } while (!is);
         } catch (Exception e) {
-            e.getStackTrace();
+            System.out.println("Incorrect! Please Try Again!!");
         }
+    }
+
+    public List<OrderItem> addOrderItems(long orderId) {
+        List<OrderItem> orderItems = new ArrayList<>();
+        System.out.println("Enter The Product Number You Want To Order: ");
+        Integer choice = Integer.parseInt(scanner.nextLine());
+        int count = 0;
+        do {
+            orderItems.add(addOrderItem(orderId));
+            count++;
+        } while (count < choice);
+        return orderItems;
     }
 }

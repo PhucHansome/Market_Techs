@@ -38,9 +38,17 @@ public class OrderItemService implements IOrderItemService {
     }
 
     @Override
-    public void update(OrderItem newOrderItem) {
+    public void update(long orderId, double price, double sum) {
         List<OrderItem> orderItems = findAll();
-        CSVUtils.write(PATH, orderItems);
+        for (OrderItem orderItem : orderItems) {
+            if (orderItem.getOrderId() == orderId) {
+                if (orderItem.getPrice() == price) {
+                    orderItem.setGrandTotal(sum);
+                    CSVUtils.write(PATH, orderItems);
+                    break;
+                }
+            }
+        }
     }
 
     @Override

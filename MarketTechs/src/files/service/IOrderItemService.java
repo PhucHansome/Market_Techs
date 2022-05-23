@@ -9,7 +9,9 @@ public interface IOrderItemService {
 
     void add(OrderItem newOrderItem);
 
-    void update(OrderItem newOrderItem);
+    void update(long orderId,double price , double sum);
 
     OrderItem getOrderItemById(int id);
+
+//    void update(long orderId, double sum);
 }

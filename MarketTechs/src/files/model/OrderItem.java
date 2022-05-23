@@ -7,6 +7,8 @@ public class OrderItem {
     private long orderId;
     private int productId;
     private String productName;
+    private double total;
+    private double grandTotal;
 
     public OrderItem(long id, double price, int quantity, long orderId, int productId, String productName, double total) {
         this.id = id;
@@ -15,6 +17,7 @@ public class OrderItem {
         this.orderId = orderId;
         this.productId = productId;
         this.productName = productName;
+        this.total = total;
     }
 
     public OrderItem() {
@@ -30,6 +33,8 @@ public class OrderItem {
         orderItem.orderId = Long.parseLong(fields[3]);
         orderItem.productId = Integer.parseInt(fields[4]);
         orderItem.productName = fields[5];
+        orderItem.total = Double.parseDouble(fields[6]);
+        orderItem.grandTotal = Double.parseDouble(fields[7]);
         return orderItem ;
     }
 
@@ -54,6 +59,14 @@ public class OrderItem {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public double getGrandTotal() {
+        return grandTotal ;
+    }
+
+    public void setGrandTotal(double grandTotal) {
+        this.grandTotal = grandTotal;
     }
 
     public void setQuantity(int quantity) {
@@ -86,6 +99,6 @@ public class OrderItem {
 
     @Override
     public String toString() {
-        return id + "," + price + "," + quantity + "," + orderId + "," + productId + "," + productName;
+        return id + "," + price + "," + quantity + "," + orderId + "," + productId + "," + productName+","+total+","+grandTotal;
     }
 }

@@ -247,7 +247,10 @@ public class OrderView {
 
     public List<OrderItem> addOrderItems(long orderId) {
         List<OrderItem> orderItems = new ArrayList<>();
-        System.out.println("Enter The Product Number You Want To Order: ");
+        TechsProduct techsProduct = new TechsProduct();
+        techsProduct.showTechs1();
+        System.out.println("Enter The Number Of Products You Want To Order ");
+        System.out.println("➲ ");
         Integer choice = Integer.parseInt(scanner.nextLine());
         int count = 0;
         do {

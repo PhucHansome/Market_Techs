@@ -332,13 +332,14 @@ public class AdminView {
         System.out.println("✦                                                ✦");
         System.out.println("✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦\n");
         System.out.println("✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦  LOGIN MANAGER ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦  ");
+        System.out.println("Press - 10 Turn Back ");
         do {
             try {
                 String username;
                 boolean check = false;
                 do {
                     System.out.println("Username");
-                    System.out.print(" ⭆ ");
+                    System.out.print("⭆ ");
                     username = scanner.nextLine();
                     ForgotPassword.backToEarlier1(username);
                     if (username.isEmpty()) {
@@ -353,6 +354,7 @@ public class AdminView {
                     System.out.println("PassWord");
                     System.out.print(" ⭆ ");
                     password = scanner.nextLine();
+                    ForgotPassword.backToEarlier1(password);
                     if (password.isEmpty()) {
                         System.out.println("Incorrect! please try again!!");
                         check = true;
@@ -366,6 +368,7 @@ public class AdminView {
                     Admin admin = adminService.getUserByAdminName(username);
                     if (admin.getRole() == Role.ADMIN) {
                         System.out.println("Please Enter Email To Confirm");
+                        System.out.print("⭆ ");
                         checkLoginEmailAdmin(admin.getEmail());
                     }
                 } else {

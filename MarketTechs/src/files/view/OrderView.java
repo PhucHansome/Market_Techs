@@ -162,7 +162,7 @@ public class OrderView {
                 if (orderItem1.getOrderId() == order.getId()) {
                     sum += orderItem1.getTotal();
                     orderItem1.setGrandTotal(sum);
-                    orderItemService.update(orderItem1.getOrderId(), orderItem1.getPrice(),sum);
+                    orderItemService.update(orderItem1.getOrderId(), orderItem1.getPrice(), sum);
                     System.out.printf(" %-20s\t %-25s %-25s \n",
                             orderItem1.getProductName(),
                             orderItem1.getQuantity(),
@@ -199,30 +199,40 @@ public class OrderView {
         List<Order> orders = orderService.findAll();
         List<OrderItem> orderItems = orderItemService.findAll();
         OrderItem newOrderItem = new OrderItem();
+        List<OrderItem> orderItemList = new ArrayList<>();
         try {
+            double total = 0;
             double sum = 0;
+            double grandTotal = 0;
             System.out.println("----------------------------------------------------------------------LIST ORDER--------------------------------------------------------------------------------");
             for (Order order : orders) {
                 for (OrderItem orderItem : orderItems) {
                     if (orderItem.getOrderId() == order.getId()) {
                         newOrderItem = orderItem;
-                        break;
+                        orderItemList.add(newOrderItem);
+                        double price = orderItem.getPrice();
+                        int quantity = orderItem.getQuantity();
+                        sum = price * quantity;
+                        grandTotal += sum;
                     }
                 }
-                sum += newOrderItem.getTotal();
-                newOrderItem.setGrandTotal(sum);
-                orderItemService.update(newOrderItem.getOrderId(),newOrderItem.getPrice(), sum);
-                System.out.println("================================================================================================================================================================");
+                newOrderItem.setGrandTotal(grandTotal);
+                orderItemService.update(newOrderItem.getOrderId(), newOrderItem.getPrice(), grandTotal);
+                System.out.println("=================================================================================================================================================================");
                 System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%41s|\n", "Id: ", order.getId(), " ", "Customer Name", order.getFullName(), "");
                 System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%41s|\n", "Number Phone: ", order.getMobile(), " ", "Address: ", order.getAddress(), "");
-                System.out.printf("|\t%-20s%-20s%-30s%-20s%-20d%-20s%-10s%-15s\t|\n", "Product Name", newOrderItem.getProductName(), " ", "Quantity", newOrderItem.getQuantity(),
-                        " ", "Prince", AppUtils.doubleToVND(newOrderItem.getPrice()));
-                System.out.println("======================================================================================================================================== total: " + AppUtils.doubleToVND(newOrderItem.getTotal()) + "\n");
-//                double result = newOrderItem.getQuantity() * newOrderItem.getPrice();
 
+                for (OrderItem orderItem : orderItemList) {
+                    total = orderItem.getPrice() * orderItem.getQuantity();
+                    System.out.printf("|\t%-20s%-20s%-10s%-15s%-15d%-10s%-10s%-18s %-15s %-19s\t|\n", "Product Name", orderItem.getProductName(), " ", "Quantity", orderItem.getQuantity(),
+                            " ", "Price", AppUtils.doubleToVND(orderItem.getPrice())
+                            , "Total Product:", AppUtils.doubleToVND(total));
+                }
+                orderItemList.clear();
+                System.out.println("========================================================================================================================== Total Revenue:  " + AppUtils.doubleToVND(grandTotal) + "\n");
+                sum = 0;
+                grandTotal = 0;
             }
-            System.out.println("|-------------------Total Revenue:" + AppUtils.doubleToVND(newOrderItem.getGrandTotal()) + "-------------------|");
-            System.out.println("===================================================================");
             boolean is = true;
             do {
                 System.out.println("Press 'q' Turn Back \t|\t 't' Exit");
@@ -257,7 +267,7 @@ public class OrderView {
             try {
                 orderItems.add(addOrderItem(orderId));
                 count++;
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Incorrect! Please Try Again!");
             }
         } while (count < choice);

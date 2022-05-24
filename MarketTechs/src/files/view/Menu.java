@@ -20,8 +20,8 @@ public class Menu {
     }
 
     public static void login() {
-        AdminView adminView = new AdminView();
-        adminView.adminLogin();
+//        AdminView adminView = new AdminView();
+//        adminView.adminLogin();
         MainMenu();
     }
 

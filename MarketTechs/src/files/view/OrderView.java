@@ -208,17 +208,17 @@ public class OrderView {
                         newOrderItem = orderItem;
 //                        break;
                     }
+                    sum += newOrderItem.getTotal();
+                    newOrderItem.setGrandTotal(sum);
+                    orderItemService.update(newOrderItem.getOrderId(),newOrderItem.getPrice(), sum);
+                    System.out.println("================================================================================================================================================================");
+                    System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%41s|\n", "Id: ", order.getId(), " ", "Customer Name", order.getFullName(), "");
+                    System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%41s|\n", "Number Phone: ", order.getMobile(), " ", "Address: ", order.getAddress(), "");
+                    System.out.printf("|\t%-20s%-20s%-30s%-20s%-20d%-20s%-10s%-15s\t|\n", "Product Name", newOrderItem.getProductName(), " ", "Quantity", newOrderItem.getQuantity(),
+                            " ", "Prince", AppUtils.doubleToVND(newOrderItem.getPrice()));
+                    System.out.println("======================================================================================================================================== total: " + AppUtils.doubleToVND(newOrderItem.getTotal()) + "\n");
                 }
 //                double result = newOrderItem.getQuantity() * newOrderItem.getPrice();
-                sum += newOrderItem.getTotal();
-                newOrderItem.setGrandTotal(sum);
-                orderItemService.update(newOrderItem.getOrderId(),newOrderItem.getPrice(), sum);
-                System.out.println("================================================================================================================================================================");
-                System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%41s|\n", "Id: ", order.getId(), " ", "Customer Name", order.getFullName(), "");
-                System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%41s|\n", "Number Phone: ", order.getMobile(), " ", "Address: ", order.getAddress(), "");
-                System.out.printf("|\t%-20s%-20s%-30s%-20s%-20d%-20s%-10s%-15s\t|\n", "Product Name", newOrderItem.getProductName(), " ", "Quantity", newOrderItem.getQuantity(),
-                        " ", "Prince", AppUtils.doubleToVND(newOrderItem.getPrice()));
-                System.out.println("======================================================================================================================================== total: " + AppUtils.doubleToVND(newOrderItem.getTotal()) + "\n");
 
             }
             System.out.println("|-------------------Total Revenue:" + AppUtils.doubleToVND(newOrderItem.getGrandTotal()) + "-------------------|");

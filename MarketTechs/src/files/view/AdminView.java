@@ -486,7 +486,7 @@ public class AdminView {
         String email = scanner.nextLine().toLowerCase();
         if (!email.equals(emailAdmin)) {
             ForgotPassword.backToEarlier1(email);
-            System.out.println("Enter '-10' Turn back Menu Forgot Password ");
+            System.out.println("Enter '-10' Turn back ");
             System.out.println("Email Incorrect!Please try again!!");
             System.out.print("➲  ");
             checkLoginEmailAdmin(emailAdmin);

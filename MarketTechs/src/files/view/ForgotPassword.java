@@ -71,14 +71,14 @@ public class ForgotPassword {
 
     private static void backToEarlier(String str) {
         if (str.equals("-10")) {
-            System.out.println("You're turn back");
+            System.out.println("You're Turn Back");
             menuForgot();
         }
     }
 
     public static void backToEarlier1(String str) {
         if (str.equals("-10")) {
-            System.out.println("You're turn back");
+            System.out.println("You're Turn Back");
                 Menu.firstMenu();
         }
     }

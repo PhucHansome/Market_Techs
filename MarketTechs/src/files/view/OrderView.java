@@ -201,6 +201,7 @@ public class OrderView {
         OrderItem newOrderItem = new OrderItem();
         List<OrderItem> orderItemList = new ArrayList<>();
         try {
+            double printTotal = 0;
             double total = 0;
             double sum = 0;
             double grandTotal = 0;
@@ -229,10 +230,13 @@ public class OrderView {
                             , "Total Product:", AppUtils.doubleToVND(total));
                 }
                 orderItemList.clear();
-                System.out.println("========================================================================================================================== Total Revenue:  " + AppUtils.doubleToVND(grandTotal) + "\n");
+                 printTotal += grandTotal;
+                System.out.println("========================================================================================================================== Total Bill   :  " + AppUtils.doubleToVND(grandTotal) + "\n");
                 sum = 0;
                 grandTotal = 0;
             }
+            System.out.println("|---------------------Total Revenue: "+ AppUtils.doubleToVND(printTotal)+"---------------------|");
+            System.out.println("|=====================================================================|");
             boolean is = true;
             do {
                 System.out.println("Press 'q' Turn Back \t|\t 't' Exit");

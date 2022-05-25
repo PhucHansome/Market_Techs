@@ -254,7 +254,7 @@ public class AdminView {
     }
 
     public void showAdmin() {
-        System.out.println("----------------------------------------------------------------------------LIST CUSTOMER----------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------LIST CUSTOMER-------------------------------------------------------------");
         System.out.printf("%-15s%-22s%-15s%-30s%-20s%-15s%-15s\n\n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
         List<Admin> admins = adminService.getAdmin();
         Collections.sort(admins);
@@ -262,7 +262,7 @@ public class AdminView {
             System.out.printf("%-15d%-22s%-15s%-30s%-20s%-15s%-15s  \n\n", admin.getId(), admin.getName(), admin.getPhone(), admin.getEmail(), admin.getAddress(), admin.getRole(), InstantUtils.instantToString(admin.getCreatDate()));
 
         }
-        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------");
         isRetry(InputOption.SHOW);
     }
 
@@ -412,7 +412,7 @@ public class AdminView {
     }
 
     public void showUser1() {
-        System.out.println("-----------------------------------------------------------------------LIST CUSTOMER-----------------------------------------------------------------------");
+        System.out.println("------------------------------------------------------LIST CUSTOMER------------------------------------------------------");
         System.out.printf("%-15s%-22s%-15s%-30s%-20s%-10s%-10s\n\n", "ID", "Name", "Number Phone", "Email", "Address", "ROLE", "Date Creat");
         List<Admin> admins = adminService.getAdmin();
         Collections.sort(admins);
@@ -420,67 +420,67 @@ public class AdminView {
             System.out.printf("%-15d%-22s%-15s%-30s%-20s%-10s%-10s  \n\n", admin.getId(), admin.getName(), admin.getPhone(), admin.getEmail(), admin.getAddress(), admin.getRole(), InstantUtils.instantToString(admin.getCreatDate()));
 
         }
-        System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------");
     }
 
-    public void remove() {
-        try {
-            showUser1();
-            adminService.getAdmin();
-            System.out.println("Press Id You Wanna Remove:");
-            System.out.print("➲ ");
-            long id = Long.parseLong(scanner.nextLine());
-            Admin admin = adminService.getUserById(id);
-            System.out.println(admin);
-            if (admin == null) {
-                System.out.println("Can't Find The Id To Delete!!");
-                remove();
-            } else {
-                boolean check = true;
-                System.out.println("\t❄ ❄ ❄ ❄ ❄ ❄ ❄REMOVE COFIRM❄ ❄ ❄ ❄ ❄ ❄ ❄");
-                System.out.println("\t❄                                          ❄");
-                System.out.println("\t❄              1. Remove                   ❄");
-                System.out.println("\t❄              2. Back                     ❄");
-                System.out.println("\t❄                                          ❄");
-                System.out.println("\t❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄");
-                System.out.print("➲ ");
-                int choice = Integer.parseInt(scanner.nextLine());
-                switch (choice) {
-                    case 1:
-                        adminService.remove(admin);
-                        System.out.println("User Deleted Successfully!");
-                        showUser1();
-                        do {
-                            System.out.println("\t------------------------------------------------------------");
-                            System.out.println("\t| Press 'y' To Go Back\t|\t'n' To Exit  |");
-                            System.out.println("\t------------------------------------------------------------");
-                            System.out.print("➲ ");
-                            String choic = scanner.nextLine();
-                            switch (choic) {
-                                case "y":
-                                    AdminViewLaucher.run();
-                                    break;
-                                case "n":
-                                    Menu.exit();
-                                    System.exit(0);
-                                    break;
-                                default:
-                                    System.out.println("Incorrect!!Please Try Again");
-                                    check = false;
-                            }
-                        } while (!check);
-                        break;
-                    case 2:
-                        AdminViewLaucher.run();
-                        break;
-                    default:
-                        System.out.println("Incorrect!!Please Try Again!!");
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Incorrect! Please try again!!");
-        }
-    }
+//    public void remove() {
+//        try {
+//            showUser1();
+//            adminService.getAdmin();
+//            System.out.println("Press Id You Wanna Remove:");
+//            System.out.print("➲ ");
+//            long id = Long.parseLong(scanner.nextLine());
+//            Admin admin = adminService.getUserById(id);
+//            System.out.println(admin);
+//            if (admin == null) {
+//                System.out.println("Can't Find The Id To Delete!!");
+//                remove();
+//            } else {
+//                boolean check = true;
+//                System.out.println("\t❄ ❄ ❄ ❄ ❄ ❄ ❄REMOVE COFIRM❄ ❄ ❄ ❄ ❄ ❄ ❄");
+//                System.out.println("\t❄                                          ❄");
+//                System.out.println("\t❄              1. Remove                   ❄");
+//                System.out.println("\t❄              2. Back                     ❄");
+//                System.out.println("\t❄                                          ❄");
+//                System.out.println("\t❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄ ❄");
+//                System.out.print("➲ ");
+//                int choice = Integer.parseInt(scanner.nextLine());
+//                switch (choice) {
+//                    case 1:
+//                        adminService.remove(admin);
+//                        System.out.println("User Deleted Successfully!");
+//                        showUser1();
+//                        do {
+//                            System.out.println("\t------------------------------------------------------------");
+//                            System.out.println("\t| Press 'y' To Go Back\t|\t'n' To Exit  |");
+//                            System.out.println("\t------------------------------------------------------------");
+//                            System.out.print("➲ ");
+//                            String choic = scanner.nextLine();
+//                            switch (choic) {
+//                                case "y":
+//                                    AdminViewLaucher.run();
+//                                    break;
+//                                case "n":
+//                                    Menu.exit();
+//                                    System.exit(0);
+//                                    break;
+//                                default:
+//                                    System.out.println("Incorrect!!Please Try Again");
+//                                    check = false;
+//                            }
+//                        } while (!check);
+//                        break;
+//                    case 2:
+//                        AdminViewLaucher.run();
+//                        break;
+//                    default:
+//                        System.out.println("Incorrect!!Please Try Again!!");
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Incorrect! Please try again!!");
+//        }
+//    }
 
     public void checkLoginEmailAdmin(String emailAdmin) {
         String email = scanner.nextLine().toLowerCase();

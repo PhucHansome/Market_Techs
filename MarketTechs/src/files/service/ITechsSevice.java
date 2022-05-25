@@ -28,4 +28,6 @@ public interface ITechsSevice {
 
 
     void updateQuantityy(long id, int quantity);
+
+    boolean isExistByName(String name);
 }

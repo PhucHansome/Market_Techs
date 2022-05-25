@@ -8,7 +8,6 @@ import files.utils.InstantUtils;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 
@@ -101,7 +100,10 @@ public class TechsProduct {
                 if (name.isEmpty()) {
                     System.out.println("Incorrect!Please Try Again!!");
                     is = false;
-                } else {
+                } else if (techsSevice.isExistByName(name)){
+                    System.out.println("Incorrect Name Already Exists ! Please Try Again");
+                    is = false;
+                }else {
                     is = true;
                 }
             } catch (Exception e) {
@@ -126,7 +128,7 @@ public class TechsProduct {
             try {
                 System.out.print("➲ ");
                 price = Double.parseDouble(scanner.nextLine());
-                if (price < 0) {
+                if (price < 1) {
                     System.out.println("Incorrect! please try again!");
                     is = false;
                 } else {
@@ -142,17 +144,11 @@ public class TechsProduct {
     private String inputType(InputOption option) {
         switch (option) {
             case ADD:
-                System.out.println("Choice your Type Product: \n" +
-                        "1. SmartPhone\n" +
-                        "2. Laptop\n" +
-                        "3. Accessory");
-                break;
+                System.out.println("Choice your Type Product: ");
+            break;
             case UPDATE:
-                System.out.println("Choice your new Type Product: \n" +
-                        "1. SmartPhone\n" +
-                        "2. Laptop\n" +
-                        "3. Accessory ");
-                break;
+            System.out.println("Choice your new Type Product: ");
+            break;
         }
         boolean is = true;
         String type = null;
@@ -172,7 +168,9 @@ public class TechsProduct {
         } while (is);
 
         return type;
+
     }
+
 
     private Integer inputQuantityTechs(InputOption option) {
         switch (option) {
@@ -189,7 +187,7 @@ public class TechsProduct {
             try {
                 System.out.print("➲ ");
                 quantity = Integer.parseInt(scanner.nextLine());
-                if (quantity < 0) {
+                if (quantity < 1) {
                     System.out.println("Incorrect! Please Try Again");
                     is = false;
                 } else {
@@ -224,11 +222,11 @@ public class TechsProduct {
 
     public void showTechs() {
         System.out.println("--------------------------------------------------------------------------LISTTECHS--------------------------------------------------------");
-        System.out.printf("%-15s %-25s %-15s %-10s %-20s %-20s %-20s\n\n", "Id", "Product Name", "Price", "Quantity", "Type", "Date Creat", "Date Update");
+        System.out.printf("%-15s %-30s %-15s %-10s %-20s %-20s %-20s\n\n", "Id", "Product Name", "Price", "Quantity", "Type", "Date Creat", "Date Update");
         List<Techs> techs = techsSevice.getTechs();
         Collections.sort(techs);
         for (Techs techs1 : techs) {
-            System.out.printf("%-15d %-25s %-15s %-10d %-20s %-20s %-20s \n\n", techs1.getId(), techs1.getNameTechs(), AppUtils.doubleToVND(techs1.getPriceTechs()), techs1.getQuantityTechs(), techs1.getType(), InstantUtils.instantToString(techs1.getCreatDate()), techs1.getUpdateDate() == null ? "" : InstantUtils.instantToString(techs1.getUpdateDate()));
+            System.out.printf("%-15d %-30s %-15s %-10d %-20s %-20s %-20s \n\n", techs1.getId(), techs1.getNameTechs(), AppUtils.doubleToVND(techs1.getPriceTechs()), techs1.getQuantityTechs(), techs1.getType(), InstantUtils.instantToString(techs1.getCreatDate()), techs1.getUpdateDate() == null ? "" : InstantUtils.instantToString(techs1.getUpdateDate()));
         }
         System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
         isRetry(InputOption.SHOW);
@@ -237,11 +235,11 @@ public class TechsProduct {
     public static void showTechs1() {
         TechsSevice techsSevice = new TechsSevice();
         System.out.println("------------------------------------------------------------LISTPRODUCT---------------------------------------------------------");
-        System.out.printf("%-15s %-25s %-15s %-10s %-20s %-20s %-20s\n\n", "Id", "Product Name", "Price", "Quantity", "Type", "Date Creat", "Date Update");
+        System.out.printf("%-15s %-30s %-15s %-10s %-20s %-20s %-20s\n\n", "Id", "Product Name", "Price", "Quantity", "Type", "Date Creat", "Date Update");
         List<Techs> techs = techsSevice.getTechs();
         Collections.sort(techs);
         for (Techs techs1 : techs) {
-            System.out.printf("%-15d %-25s %-15s %-10d %-20s %-20s %-20s \n\n", techs1.getId(), techs1.getNameTechs(), AppUtils.doubleToVND(techs1.getPriceTechs()), techs1.getQuantityTechs(), techs1.getType(), InstantUtils.instantToString(techs1.getCreatDate()), techs1.getUpdateDate() == null ? "" : InstantUtils.instantToString(techs1.getUpdateDate()));
+            System.out.printf("%-15d %-30s %-15s %-10d %-20s %-20s %-20s \n\n", techs1.getId(), techs1.getNameTechs(), AppUtils.doubleToVND(techs1.getPriceTechs()), techs1.getQuantityTechs(), techs1.getType(), InstantUtils.instantToString(techs1.getCreatDate()), techs1.getUpdateDate() == null ? "" : InstantUtils.instantToString(techs1.getUpdateDate()));
             ;
         }
         System.out.println("---------------------------------------------------------------------------------------------------------------------------------");
@@ -385,7 +383,7 @@ public class TechsProduct {
         System.out.printf("%-15s %-20s %-20s %-15s %-20s %-20s\n",
                 "Id", "Name Product", "Type", "Quantity","Price","Creat Date" );
         for (Techs techs1 : techs){
-            if(techs1.toString().toLowerCase().contains(search)){
+            if(techs1.getNameTechs().toLowerCase().contains(search)){
                 count++;
                 System.out.printf("%-15d %-20s %-20s %-15d %-20s %-20s\n",
                         techs1.getId(),

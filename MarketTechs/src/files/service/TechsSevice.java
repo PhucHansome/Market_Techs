@@ -137,6 +137,17 @@ public class TechsSevice implements ITechsSevice {
         }
     }
 
+    @Override
+    public boolean isExistByName(String name) {
+        List<Techs> techsList = getTechs();
+        for (Techs techs: techsList){
+            if (techs.getNameTechs().equalsIgnoreCase(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void update() {
         List<Techs> techs = getTechs();
         CSVUtils.write(path, techs);

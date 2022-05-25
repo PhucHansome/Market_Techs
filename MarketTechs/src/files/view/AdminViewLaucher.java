@@ -23,15 +23,12 @@ public class AdminViewLaucher {
                         adminView.updateAdmin();
                         break;
                     case 3:
-                        adminView.remove();
-                        break;
-                    case 4:
                         adminView.showAdmin();
                         break;
-                    case 5:
+                    case 4:
                         Menu.MainMenu();
                         break;
-                    case 6:
+                    case 5:
                         Menu.exit();
                         System.exit(0);
                     default:

@@ -89,10 +89,10 @@ public class Menu {
         System.out.println("\t卍                                              卍");
         System.out.println("\t卍           1. Add New Account                 卍");
         System.out.println("\t卍           2. Edit Account Information        卍");
-        System.out.println("\t卍           3. Delete Account                  卍");
-        System.out.println("\t卍           4. Show All Account                卍");
-        System.out.println("\t卍           5. Back Main Menu                  卍");
-        System.out.println("\t卍           6. Exit                            卍");
+//        System.out.println("\t卍           3. Delete Account                  卍");
+        System.out.println("\t卍           3. Show All Account                卍");
+        System.out.println("\t卍           4. Back Main Menu                  卍");
+        System.out.println("\t卍           5. Exit                            卍");
         System.out.println("\t卍                                              卍");
         System.out.println("\t卍 卍 卍 卍 卍 卍 卍 卍 卍 卍 卍 卍 卍 卍 卍 卍 卍 卍 卍");
     }

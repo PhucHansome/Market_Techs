@@ -111,10 +111,10 @@ public class OrderView {
             System.out.println("Order Creation Successful");
             System.out.println("㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡");
             System.out.println("㋡                                         ㋡");
-            System.out.println("㋡           1. Create Next Order          ㋡");
-            System.out.println("㋡           2. Print Bill                 ㋡");
-            System.out.println("㋡           3. Turn Back                  ㋡");
-            System.out.println("㋡           4. Exit                       ㋡");
+//            System.out.println("㋡           1. Create Next Order          ㋡");
+            System.out.println("㋡           1. Print Bill                 ㋡");
+            System.out.println("㋡           2. Turn Back                  ㋡");
+            System.out.println("㋡           3. Exit                       ㋡");
             System.out.println("㋡                                         ㋡");
             System.out.println("㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡ ㋡");
             System.out.print(" ⭆ ");
@@ -122,15 +122,12 @@ public class OrderView {
                 int choice = Integer.parseInt(scanner.nextLine());
                 switch (choice) {
                     case 1:
-                        addOrderItems(orderId);
-                        break;
-                    case 2:
                         showPaymentInfo(order);
                         break;
-                    case 3:
+                    case 2:
                         OrderViewLauncher.run();
                         break;
-                    case 4:
+                    case 3:
                         AppUtils.exit();
                         System.exit(0);
                         break;
@@ -155,15 +152,17 @@ public class OrderView {
             System.out.printf("|\t%-20s\t %-25s %20s |\n", "Address     :", order.getAddress(), "");
             System.out.printf("|\t%-20s\t %-25s %20s |\n", "Creat Date  : ", InstantUtils.instantToString(order.getCreatedAt()), "");
             System.out.println("=============================================================================");
-            System.out.printf(" %-20s\t %-25s %-25s \n", "Product Name", "Quantity", "Price");
+            System.out.printf("%-3s%-17s\t %-25s %-25s \n","","Product Name", "Quantity", "Price");
             List<OrderItem> orderItem = orderItemService.findAll();
             double sum = 0;
+            int count = 0;
             for (OrderItem orderItem1 : orderItem) {
                 if (orderItem1.getOrderId() == order.getId()) {
                     sum += orderItem1.getTotal();
+                    count++;
                     orderItem1.setGrandTotal(sum);
                     orderItemService.update(orderItem1.getOrderId(), orderItem1.getPrice(), sum);
-                    System.out.printf(" %-20s\t %-25s %-25s \n",
+                    System.out.printf("%-2s.%-20s\t %-25s %-25s \n",count,
                             orderItem1.getProductName(),
                             orderItem1.getQuantity(),
                             AppUtils.doubleToVND(orderItem1.getPrice()));
@@ -201,6 +200,7 @@ public class OrderView {
         OrderItem newOrderItem = new OrderItem();
         List<OrderItem> orderItemList = new ArrayList<>();
         try {
+            int count = 0;
             double printTotal = 0;
             double total = 0;
             double sum = 0;
@@ -219,21 +219,26 @@ public class OrderView {
                 }
                 newOrderItem.setGrandTotal(grandTotal);
                 orderItemService.update(newOrderItem.getOrderId(), newOrderItem.getPrice(), grandTotal);
-                System.out.println("=================================================================================================================================================================");
-                System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%41s|\n", "Id: ", order.getId(), " ", "Customer Name", order.getFullName(), "");
-                System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%41s|\n", "Number Phone: ", order.getMobile(), " ", "Address: ", order.getAddress(), "");
+                System.out.println("=================================================================================================================================================");
+                System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%-25s|\n", "Id: ", order.getId(), " ", "Customer Name:", order.getFullName(), "");
+                System.out.printf("|\t%-20s%-20s%-30s%-20s%-25s%-25s|\n", "Number Phone: ", order.getMobile(), " ", "Address: ", order.getAddress(), "");
+                System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.printf("|\t%-4s%-20s%-20s%-10s%-15s%-15s%-10s%-10s%-18s %-15s %-1s|\n","STT","","Product Name","","","Quantity"," ","Price","     ", "Total Product","" );
+                System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
 
                 for (OrderItem orderItem : orderItemList) {
+                    count++;
                     total = orderItem.getPrice() * orderItem.getQuantity();
-                    System.out.printf("|\t%-20s%-20s%-10s%-15s%-15d%-10s%-10s%-18s %-15s %-19s\t|\n", "Product Name", orderItem.getProductName(), " ", "Quantity", orderItem.getQuantity(),
-                            " ", "Price", AppUtils.doubleToVND(orderItem.getPrice())
-                            , "Total Product:", AppUtils.doubleToVND(total));
+                    System.out.printf("|\t%-2d.%-1s%-20s%-20s%-10s%-15s%-15d%-10s%-18s%-11s%14s\t|\n",count,"", "", orderItem.getProductName(), " ", "", orderItem.getQuantity()
+                            , "", AppUtils.doubleToVND(orderItem.getPrice())
+                            , "", AppUtils.doubleToVND(total));
                 }
                 orderItemList.clear();
                  printTotal += grandTotal;
-                System.out.println("========================================================================================================================== Total Bill   :  " + AppUtils.doubleToVND(grandTotal) + "\n");
+                System.out.println("==================================================================================================================== Total Bill:  " + AppUtils.doubleToVND(grandTotal) + "\n");
                 sum = 0;
                 grandTotal = 0;
+                count = 0;
             }
             System.out.println("|---------------------Total Revenue: "+ AppUtils.doubleToVND(printTotal)+"---------------------|");
             System.out.println("|=====================================================================|");

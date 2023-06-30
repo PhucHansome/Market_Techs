@@ -17,6 +17,7 @@ public class OrderView {
     private final ITechsSevice techsSevice;
     private final IOrderService orderService;
     private final IOrderItemService orderItemService;
+    private TechsProduct techsProduct;
 
     public OrderView() {
         techsSevice = TechsSevice.getInstance();
@@ -28,8 +29,7 @@ public class OrderView {
         do {
             try {
                 orderItemService.findAll();
-                TechsProduct techsProductView = new TechsProduct();
-                techsProductView.showTechs1();
+                techsProduct.showTechs1();
                 long id = System.currentTimeMillis() / 1000;
                 System.out.println("Press Product Id: ");
                 System.out.print("⭆ ");
@@ -69,9 +69,9 @@ public class OrderView {
             return false;
     }
 
+
     public void addOrder() {
         try {
-            orderItemService.findAll();
             long orderId = System.currentTimeMillis() / 1000;
             System.out.println("Press Full Name(Example: Phuc Nguyen) ");
             System.out.print(" ⭆ ");
@@ -83,7 +83,7 @@ public class OrderView {
                 name = scanner.nextLine();
             }
             System.out.println("Press Number Phone");
-            System.out.print(" ⭆ ");
+            System.out.print("⭆ ");
             String phone = scanner.nextLine();
             while (!ValidateUtils.isPhoneValid(phone)) {
                 System.out.println("Number Phone " + phone + "Incorrect! Please Try Again(Start With 0 And Total 10 Numbers)");
@@ -144,15 +144,15 @@ public class OrderView {
     public void showPaymentInfo(Order order) {
 
         try {
-            System.out.println("=============================================================================");
-            System.out.println("|                                   BILL                                    |");
-            System.out.println("=============================================================================");
-            System.out.printf("|\t%-20s\t %-25s %20s |\n", "Full Name   :", order.getFullName(), "");
-            System.out.printf("|\t%-20s\t %-25s %20s |\n", "NumberPhone :", order.getMobile(), "");
-            System.out.printf("|\t%-20s\t %-25s %20s |\n", "Address     :", order.getAddress(), "");
-            System.out.printf("|\t%-20s\t %-25s %20s |\n", "Creat Date  : ", InstantUtils.instantToString(order.getCreatedAt()), "");
-            System.out.println("=============================================================================");
-            System.out.printf("%-3s%-17s\t %-25s %-25s \n","","Product Name", "Quantity", "Price");
+            System.out.println("==========================================================================================");
+            System.out.println("|                                          BILL                                           |");
+            System.out.println("==========================================================================================");
+            System.out.printf("|\t%-20s\t %-25s %30s |\n", "Full Name   :", order.getFullName(), "");
+            System.out.printf("|\t%-20s\t %-25s %30s |\n", "NumberPhone :", order.getMobile(), "");
+            System.out.printf("|\t%-20s\t %-25s %30s |\n", "Address     :", order.getAddress(), "");
+            System.out.printf("|\t%-20s\t %-25s %30s |\n", "Creat Date  : ", InstantUtils.instantToString(order.getCreatedAt()), "");
+            System.out.println("==========================================================================================");
+            System.out.printf("%-3s%-17s\t %-25s %-25s  %-25s\n","","Product Name", "Quantity", "Price", "total in oneLine|");
             List<OrderItem> orderItem = orderItemService.findAll();
             double sum = 0;
             int count = 0;
@@ -162,10 +162,10 @@ public class OrderView {
                     count++;
                     orderItem1.setGrandTotal(sum);
                     orderItemService.update(orderItem1.getOrderId(), orderItem1.getPrice(), sum);
-                    System.out.printf("%-2s.%-20s\t %-25s %-25s \n",count,
+                    System.out.printf("|%-2s.%-20s\t %-25s %-25s %-25s |11\n",count,
                             orderItem1.getProductName(),
                             orderItem1.getQuantity(),
-                            AppUtils.doubleToVND(orderItem1.getPrice()));
+                            AppUtils.doubleToVND(orderItem1.getPrice()),AppUtils.doubleToVND(orderItem1.getQuantity()*orderItem1.getPrice()) );
                 }
             }
             System.out.println("                                             Total:" + AppUtils.doubleToVND(sum) + "\n");
@@ -266,20 +266,44 @@ public class OrderView {
 
     public List<OrderItem> addOrderItems(long orderId) {
         List<OrderItem> orderItems = new ArrayList<>();
-        TechsProduct techsProduct = new TechsProduct();
-        techsProduct.showTechs1();
-        System.out.println("Enter The Number Of Products You Want To Order ");
+        System.out.println("Nhân '1' Nếu bạn muốn order 1 sản phẩm");
+        System.out.println("Nhấn '2' nếu bạn muốn order 5 sản phẩm");
+        System.out.println("Nhấn '3' nếu bạn muốn order số bạn muốn");
+        System.out.println("Nhấn '4' nếu bạn muốn quay lại thông tin trước");
+        System.out.println("Nhấn '5' nếu bạn muốn thoát Order");
         System.out.print("➲ ");
         int choice = Integer.parseInt(scanner.nextLine());
         int count = 0;
-        do {
-            try {
+        switch (choice){
+            case 1:
                 orderItems.add(addOrderItem(orderId));
-                count++;
-            } catch (Exception e) {
-                System.out.println("Incorrect! Please Try Again!");
-            }
-        } while (count < choice);
+                break;
+            case 2:
+                for(int i = 0; i < 5; i++){
+                    orderItems.add(addOrderItem(orderId));
+                }
+                break;
+            case 3:
+                System.out.println("nhấn số lượng bạn muốn order");
+                System.out.print("➲ ");
+                int choices = Integer.parseInt(scanner.nextLine());
+                do {
+                    try {
+                        orderItems.add(addOrderItem(orderId));
+                        count++;
+                    } catch (Exception e) {
+                        System.out.println("Incorrect! Please Try Again!");
+                    }
+                } while (count < choices);
+                break;
+            case 4:
+                OrderViewLauncher.run();
+                break;
+            case 5:
+                AppUtils.exit();
+                break;
+        }
+
         return orderItems;
     }
 }

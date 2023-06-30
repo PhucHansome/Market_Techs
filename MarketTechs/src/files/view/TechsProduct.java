@@ -12,11 +12,11 @@ import java.util.Scanner;
 
 
 public class TechsProduct {
-    private final ITechsSevice techsSevice;
+    private final ITechsSevice techService;
     private final Scanner scanner = new Scanner(System.in);
 
     public TechsProduct() {
-        techsSevice = TechsSevice.getInstance();
+        techService = TechsSevice.getInstance();
     }
 
     private boolean isRetry(InputOption inputOption) {
@@ -63,7 +63,7 @@ public class TechsProduct {
             case ADD:
                 System.out.println("Press Id");
                 System.out.print("➲ ");
-                while (techsSevice.existById(id = Long.parseLong(scanner.nextLine()))) {
+                while (techService.existById(id = Long.parseLong(scanner.nextLine()))) {
                     System.out.println("This Id Already Exists!Please Try Again!!");
                     System.out.print("➲ ");
                     break;
@@ -72,7 +72,7 @@ public class TechsProduct {
             case UPDATE:
                 System.out.println("Enter Your Id You Wanna Change: ");
                 System.out.print("➲ ");
-                while (!techsSevice.existById(id = Long.parseLong(scanner.nextLine()))) {
+                while (!techService.existById(id = Long.parseLong(scanner.nextLine()))) {
                     System.out.println("This Id Already Exists!Please Try Again!!");
                     System.out.print("➲ ");
                     break;
@@ -100,7 +100,7 @@ public class TechsProduct {
                 if (name.isEmpty()) {
                     System.out.println("Incorrect!Please Try Again!!");
                     is = false;
-                } else if (techsSevice.isExistByName(name)){
+                } else if (techService.isExistByName(name)){
                     System.out.println("Incorrect Name Already Exists ! Please Try Again");
                     is = false;
                 }else {
@@ -210,7 +210,7 @@ public class TechsProduct {
                 String type = inputType(InputOption.ADD);
                 Techs techs = new Techs(id, nameTechs, priceTechs, quantityTechs, type);
                 System.out.println(techs);
-                techsSevice.add(techs);
+                techService.add(techs);
                 showTechs1();
                 System.out.println("You Have Successfully Added");
             } catch (Exception e) {
@@ -223,7 +223,7 @@ public class TechsProduct {
     public void showTechs() {
         System.out.println("--------------------------------------------------------------------------LISTTECHS--------------------------------------------------------");
         System.out.printf("%-15s %-30s %-15s %-10s %-20s %-20s %-20s\n\n", "Id", "Product Name", "Price", "Quantity", "Type", "Date Creat", "Date Update");
-        List<Techs> techs = techsSevice.getTechs();
+        List<Techs> techs = techService.getTechs();
         Collections.sort(techs);
         for (Techs techs1 : techs) {
             System.out.printf("%-15d %-30s %-15s %-10d %-20s %-20s %-20s \n\n", techs1.getId(), techs1.getNameTechs(), AppUtils.doubleToVND(techs1.getPriceTechs()), techs1.getQuantityTechs(), techs1.getType(), InstantUtils.instantToString(techs1.getCreatDate()), techs1.getUpdateDate() == null ? "" : InstantUtils.instantToString(techs1.getUpdateDate()));
@@ -265,7 +265,7 @@ public class TechsProduct {
                     System.out.println("Select Function");
                     System.out.print("➲ ");
                     option = Integer.parseInt(scanner.nextLine());
-                    if (option > 4 || option < 1) {
+                    if (option > 5 || option < 1) {
                         System.out.println("Incorrect! Please Try Again!!");
                         continue;
                     }
@@ -277,28 +277,28 @@ public class TechsProduct {
                     case 1:
                         String name = inputTechsName(InputOption.UPDATE);
                         newTechs.setNameTechs(name);
-                        techsSevice.updateName(newTechs);
+                        techService.updateName(newTechs);
                         System.out.println("You Have Successfully Changed The Name");
                         showTechs1();
                         break;
                     case 2:
                         Double price = inputPriceTechs(InputOption.UPDATE);
                         newTechs.setPriceTechs(price);
-                        techsSevice.updatePrice(newTechs);
+                        techService.updatePrice(newTechs);
                         System.out.println("You Have Successfully Changed The Price");
                         showTechs1();
                         break;
                     case 3:
                         Integer quantity = inputQuantityTechs(InputOption.UPDATE);
                         newTechs.setQuantityTechs(quantity);
-                        techsSevice.updateQuantity(newTechs);
+                        techService.updateQuantity(newTechs);
                         System.out.println("You Have Successfully Changed The Number");
                         showTechs1();
                         break;
                     case 4:
                         String description = inputType(InputOption.UPDATE);
                         newTechs.setType(description);
-                        techsSevice.updateDescription(newTechs);
+                        techService.updateDescription(newTechs);
                         System.out.println("You Have Successfully Changed The Description");
                         showTechs1();
                         break;
@@ -315,11 +315,11 @@ public class TechsProduct {
         do {
             try {
                 showTechs1();
-                techsSevice.getTechs();
+                techService.getTechs();
                 System.out.println("Press Id You Wanna Remove: ");
                 System.out.print("➲ ");
                 long id = Long.parseLong(scanner.nextLine());
-                Techs techs = techsSevice.getTechsById(id);
+                Techs techs = techService.getTechsById(id);
                 System.out.println(techs);
                 if (techs == null) {
                     System.out.println("ID Not Found To Remove");
@@ -335,7 +335,7 @@ public class TechsProduct {
                     int choice = Integer.parseInt(scanner.nextLine());
                     switch (choice) {
                         case 1:
-                            techsSevice.remove(techs);
+                            techService.remove(techs);
                             System.out.println("Successfully Remove!");
                             showTechs1();
                             do {
@@ -372,7 +372,7 @@ public class TechsProduct {
     }
 
     public void searchByNameProduct() {
-        List<Techs> techs = techsSevice.getTechs();
+        List<Techs> techs = techService.getTechs();
         int count = 0;
         System.out.println();
         System.out.println("Press Your Product You Wanna Search: ");

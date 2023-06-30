@@ -332,12 +332,12 @@ public class AdminView {
         System.out.println("✦                                                ✦");
         System.out.println("✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦\n");
         System.out.println("✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦  LOGIN MANAGER ✦ ✦ ✦ ✦ ✦ ✦ ✦ ✦  ");
-        System.out.println("Press - 10 Turn Back ");
         do {
             try {
                 String username;
                 boolean check = false;
                 do {
+                    System.out.println("Press '-10' Turn Back ");
                     System.out.println("Username");
                     System.out.print("⭆ ");
                     username = scanner.nextLine();
@@ -352,7 +352,7 @@ public class AdminView {
                 String password;
                 do {
                     System.out.println("PassWord");
-                    System.out.print(" ⭆ ");
+                    System.out.print("⭆ ");
                     password = scanner.nextLine();
                     ForgotPassword.backToEarlier1(password);
                     if (password.isEmpty()) {

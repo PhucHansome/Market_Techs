@@ -123,12 +123,12 @@ public class Menu {
     }
 
     public static void firstLauch() {
-        System.out.println("\t♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎LOGIN♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎");
-        System.out.println("\t♎                                        ♎");
-        System.out.println("\t♎           1. Management Login          ♎");
-        System.out.println("\t♎           2. Forgot Password           ♎");
-        System.out.println("\t♎                                        ♎");
-        System.out.println("\t♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎");
+        System.out.println("\t♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ LOGIN ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎");
+        System.out.println("\t♎                                         ♎");
+        System.out.println("\t♎           1. Management Login           ♎");
+        System.out.println("\t♎           2. Forgot Password            ♎");
+        System.out.println("\t♎                                         ♎");
+        System.out.println("\t♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎ ♎  ♎");
 
     }
 

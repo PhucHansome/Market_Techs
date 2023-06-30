@@ -137,6 +137,20 @@ public class TechsSevice implements ITechsSevice {
         }
     }
 
+    public List<Techs> SearchCategory(String NameCategory){
+        List<Techs> newTechs = new ArrayList<>();
+        List<String> records = CSVUtils.read(path);
+        int sum = 0;
+        for (String record : records) {
+            sum+= 1;
+            if(NameCategory.contains(newTechs.get(sum).getType())){
+                newTechs.add(Techs.parseTechs(record));
+            }
+        }
+        System.out.println(sum);
+        return newTechs;
+    }
+
     @Override
     public boolean isExistByName(String name) {
         List<Techs> techsList = getTechs();
